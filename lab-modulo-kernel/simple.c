@@ -1,3 +1,6 @@
+// Wellington Oliveira <well.oliveira.snt@gmail.com>
+// https://github.com/oliveirasWell/so-2026-01-ufms
+
 #include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
@@ -66,4 +69,4 @@ module_exit(simple_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Birthday Linked List Module");
-MODULE_AUTHOR("SGG");
+MODULE_AUTHOR("Wellington Oliveira <well.oliveira.snt@gmail.com> | https://github.com/oliveirasWell/so-2026-01-ufms");
