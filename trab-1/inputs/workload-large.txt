@@ -1,0 +1,12 @@
+# Larger mixed workload: 8 processes, varied priorities, mix of pure CPU
+# and CPU+I/O burst chains. Stresses the comparison table across all 5 algorithms.
+quantum=4
+cs_cost=0
+P1 0  3 6 4 5 2 3
+P2 1  1 8
+P3 2  4 2 3 2 2 3 2
+P4 3  2 4 5 4
+P5 5  3 1
+P6 6  5 9
+P7 8  2 3 2 3
+P8 10 1 2 4 2

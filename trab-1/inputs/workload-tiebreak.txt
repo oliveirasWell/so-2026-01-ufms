@@ -1,0 +1,10 @@
+# Tie-break stress: many processes arrive simultaneously with equal CPU
+# bursts and equal priorities. Forces the simulator to apply secondary
+# ordering rules (arrival, then pid lexicographic for SJF) consistently.
+quantum=2
+P1 0 1 4
+P2 0 1 4
+P3 0 1 4
+P4 0 1 4
+P5 0 2 4 2 4
+P6 0 2 4 2 4

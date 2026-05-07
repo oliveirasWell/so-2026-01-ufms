@@ -1,0 +1,6 @@
+quantum=2
+# pid arrival priority bursts (CPU IO CPU IO ... CPU)
+P1 0 2 5 3 3
+P2 1 1 4
+P3 2 3 2 2 4
+P4 4 2 1
