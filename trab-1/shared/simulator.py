@@ -3,6 +3,7 @@ from enum import StrEnum
 
 from schedulers.base import Scheduler
 from shared.process import Process, Workload
+from shared.runtime_process import RuntimeProcess
 
 IDLE_PID = "IDLE"
 CS_PID = "CS"
@@ -41,20 +42,6 @@ class SimulationResult:
     workload: Workload
     gantt: tuple[GanttSlice, ...]
     trace: tuple[TraceEntry, ...]
-
-
-@dataclass
-class RuntimeProcess:
-    process: Process
-    burst_index: int = 0
-    cpu_remaining: int = 0
-    io_remaining: int = 0
-    first_dispatch: int | None = None
-    finish: int | None = None
-
-    @property
-    def pid(self) -> str:
-        return self.process.pid
 
 
 @dataclass

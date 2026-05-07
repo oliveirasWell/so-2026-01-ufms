@@ -1,19 +1,14 @@
-from __future__ import annotations
-
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, ClassVar
+from typing import ClassVar
 
-if TYPE_CHECKING:
-    from shared.simulator import RuntimeProcess
+from shared.runtime_process import RuntimeProcess
 
 
 class Scheduler(ABC):
     name: ClassVar[str]
 
     @abstractmethod
-    def pick_next(
-        self, ready: list["RuntimeProcess"], now: int
-    ) -> "RuntimeProcess | None": ...
+    def pick_next(self, ready: list[RuntimeProcess], now: int) -> RuntimeProcess | None: ...
 
     def is_preemptive(self) -> bool:
         return False
@@ -23,8 +18,8 @@ class Scheduler(ABC):
 
     def should_preempt(
         self,
-        running: "RuntimeProcess",
-        ready: list["RuntimeProcess"],
+        running: RuntimeProcess,
+        ready: list[RuntimeProcess],
         now: int,
     ) -> bool:
         return False
