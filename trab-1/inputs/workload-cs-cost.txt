@@ -1,9 +1,0 @@
-# Same processes as the spec gabarito but with cs_cost=1.
-# Useful to compare RR throughput vs the zero-cost baseline and to see
-# CS slices appearing in the Gantt and dropping cpu_utilization.
-quantum=2
-cs_cost=1
-P1 0 2 5 3 3
-P2 1 1 4
-P3 2 3 2 2 4
-P4 4 2 1

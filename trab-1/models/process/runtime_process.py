@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from shared.process import Process
+from models.process.process import Process
 
 
 @dataclass

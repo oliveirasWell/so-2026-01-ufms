@@ -1,8 +1,0 @@
-# I/O-heavy: short CPU bursts interleaved with long I/O.
-# Multiple processes overlap on parallel I/O devices, so CPU often idles.
-# Good to observe cpu_utilization < 1 and how RR/SJF interleave returning jobs.
-quantum=2
-P1 0 2 2 5 2 5 2
-P2 1 2 1 4 1 4 1
-P3 2 2 3 6 3
-P4 5 2 2 3 2 3 2

@@ -1,29 +1,10 @@
-from dataclasses import dataclass
 from statistics import mean
 
-from shared.simulator import CS_PID, IDLE_PID, Event, SimulationResult
-
-
-@dataclass(frozen=True)
-class ProcessMetrics:
-    pid: str
-    arrival: int
-    cpu_total: int
-    io_total: int
-    finish: int
-    turnaround: int
-    waiting: int
-    response: int
-
-
-@dataclass(frozen=True)
-class MetricsReport:
-    algorithm: str
-    per_process: tuple[ProcessMetrics, ...]
-    avg_turnaround: float
-    avg_waiting: float
-    avg_response: float
-    cpu_utilization: float
+from models.metrics.metrics_report import MetricsReport
+from models.metrics.process_metrics import ProcessMetrics
+from models.simulation.constants import CS_PID, IDLE_PID
+from models.simulation.event import Event
+from models.simulation.simulation_result import SimulationResult
 
 
 def compute_metrics(result: SimulationResult) -> MetricsReport:

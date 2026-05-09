@@ -1,21 +1,16 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 import matplotlib.pyplot as plt
+from matplotlib.axes import Axes
 
 from shared.comparison import COMPARISON_METRICS
-from shared.metrics import MetricsReport
-from shared.simulator import CS_PID, IDLE_PID, SimulationResult
-
-if TYPE_CHECKING:
-    from matplotlib.axes import Axes
+from models.metrics.metrics_report import MetricsReport
+from models.simulation.constants import CS_PID, IDLE_PID
+from models.simulation.simulation_result import SimulationResult
 
 _NEUTRAL_COLOR = "#bdbdbd"
 _CS_COLOR = "#9e9e9e"
 
 
-def plot_gantt(result: SimulationResult, ax: "Axes | None" = None) -> "Axes":
+def plot_gantt(result: SimulationResult, ax: Axes | None = None) -> Axes:
     if ax is None:
         _, ax = plt.subplots(figsize=(10, 3))
 
@@ -50,8 +45,8 @@ def plot_gantt(result: SimulationResult, ax: "Axes | None" = None) -> "Axes":
 def plot_metric_bars(
     reports: list[MetricsReport],
     metric: str,
-    ax: "Axes | None" = None,
-) -> "Axes":
+    ax: Axes | None = None,
+) -> Axes:
     if metric not in COMPARISON_METRICS:
         raise ValueError(f"unknown metric '{metric}'")
     if ax is None:

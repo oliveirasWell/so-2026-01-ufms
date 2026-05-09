@@ -1,9 +1,0 @@
-# Priority pathological case: a long high-priority job arrives early
-# and starves shorter low-priority jobs. SJF will outperform Priority on
-# avg_waiting; Priority will still win avg_response for the privileged job.
-quantum=2
-P1 0 1 12
-P2 1 5 2
-P3 2 5 3
-P4 3 5 2
-P5 4 5 4

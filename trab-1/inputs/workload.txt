@@ -1,6 +1,18 @@
+# Comprehensive workload - exercises every Simulator feature in one input.
+# - quantum=2 triggers RR preemption on long bursts
+# - cs_cost=1 produces CONTEXT_SWITCH events and CS slices in the Gantt
+# - multi-burst processes (CPU IO CPU ...) exercise IO_DONE and re-queue
+# - single-burst processes exercise the short path
+# - simultaneous arrivals at t=4 (P4, P5) exercise tie-break ordering
+# - late arrival at t=10 (P7) exercises dispatch into a populated system
+# - priority range 1..4 differentiates the Priority scheduler
+# pid arrival priority bursts(CPU [IO CPU]...)
 quantum=2
-# pid arrival priority bursts (CPU IO CPU IO ... CPU)
+cs_cost=1
 P1 0 2 5 3 3
 P2 1 1 4
 P3 2 3 2 2 4
 P4 4 2 1
+P5 4 4 3
+P6 6 1 2 1 2
+P7 10 2 1

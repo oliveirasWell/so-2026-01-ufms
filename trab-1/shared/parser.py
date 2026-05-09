@@ -1,6 +1,7 @@
 from pathlib import Path
 
-from shared.process import Process, Workload
+from models.process.process import Process
+from models.process.workload import Workload
 
 _QUANTUM_KEY = "quantum"
 _CS_COST_KEY = "cs_cost"
@@ -8,7 +9,7 @@ _VALID_HEADERS = frozenset({_QUANTUM_KEY, _CS_COST_KEY})
 
 
 def parse_input(path: str | Path) -> Workload:
-    quantum: int | None = None
+    quantum: int = 0
     cs_cost: int = 0
     processes: list[Process] = []
     seen_pids: set[str] = set()
@@ -29,8 +30,6 @@ def parse_input(path: str | Path) -> Workload:
             if parsed < 0:
                 raise ValueError(f"line {line_no}: '{key}' must be non-negative")
             if key == _QUANTUM_KEY:
-                if parsed == 0:
-                    raise ValueError(f"line {line_no}: quantum must be positive")
                 quantum = parsed
             else:
                 cs_cost = parsed

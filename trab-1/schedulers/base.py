@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import ClassVar
 
-from shared.runtime_process import RuntimeProcess
+from models.process.runtime_process import RuntimeProcess
 
 
 class Scheduler(ABC):
@@ -10,11 +10,8 @@ class Scheduler(ABC):
     @abstractmethod
     def pick_next(self, ready: list[RuntimeProcess], now: int) -> RuntimeProcess | None: ...
 
-    def is_preemptive(self) -> bool:
-        return False
-
-    def quantum(self) -> int | None:
-        return None
+    def on_dispatch(self, running: RuntimeProcess, now: int) -> None:
+        """Hook fired right after a process is dispatched. Override to track per-dispatch state."""
 
     def should_preempt(
         self,

@@ -1,7 +1,7 @@
 from typing import ClassVar
 
 from schedulers.base import Scheduler
-from shared.runtime_process import RuntimeProcess
+from models.process.runtime_process import RuntimeProcess
 
 
 class FCFS(Scheduler):

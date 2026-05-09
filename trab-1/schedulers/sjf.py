@@ -1,5 +1,5 @@
 from schedulers.base import Scheduler
-from shared.runtime_process import RuntimeProcess
+from models.process.runtime_process import RuntimeProcess
 
 
 class SJF(Scheduler):
@@ -11,9 +11,6 @@ class SJF(Scheduler):
         if not ready:
             return None
         return min(ready, key=self._sort_key)
-
-    def is_preemptive(self) -> bool:
-        return self._preemptive
 
     def should_preempt(
         self,

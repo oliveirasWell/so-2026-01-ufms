@@ -1,7 +1,7 @@
 from typing import ClassVar
 
 from schedulers.base import Scheduler
-from shared.runtime_process import RuntimeProcess
+from models.process.runtime_process import RuntimeProcess
 
 
 class Priority(Scheduler):
@@ -10,8 +10,4 @@ class Priority(Scheduler):
     def pick_next(self, ready: list[RuntimeProcess], now: int) -> RuntimeProcess | None:
         if not ready:
             return None
-        best = ready[0]
-        for rp in ready[1:]:
-            if rp.process.priority < best.process.priority:
-                best = rp
-        return best
+        return min(ready, key=lambda rp: rp.process.priority)
