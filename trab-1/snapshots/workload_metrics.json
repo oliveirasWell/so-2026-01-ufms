@@ -1,55 +1,55 @@
 {
   "FCFS": {
     "per_process": {
-      "P1": {
+      "P01": {
         "finish": 26,
         "turnaround": 26,
         "waiting": 15,
         "response": 0
       },
-      "P2": {
+      "P02": {
         "finish": 10,
         "turnaround": 9,
         "waiting": 5,
         "response": 5
       },
-      "P3": {
+      "P03": {
         "finish": 49,
         "turnaround": 47,
         "waiting": 39,
         "response": 9
       },
-      "P4": {
+      "P04": {
         "finish": 15,
         "turnaround": 11,
         "waiting": 10,
         "response": 10
       },
-      "P5": {
+      "P05": {
         "finish": 19,
         "turnaround": 15,
         "waiting": 12,
         "response": 12
       },
-      "P6": {
+      "P06": {
         "finish": 74,
         "turnaround": 68,
         "waiting": 63,
         "response": 14
       },
-      "P7": {
+      "P07": {
         "finish": 28,
         "turnaround": 18,
         "waiting": 17,
         "response": 17
       },
-      "P8": {
+      "P08": {
         "finish": 103,
         "turnaround": 92,
         "waiting": 86,
         "response": 18
       },
-      "P9": {
+      "P09": {
         "finish": 38,
         "turnaround": 26,
         "waiting": 20,
@@ -171,55 +171,55 @@
   },
   "SJF": {
     "per_process": {
-      "P1": {
+      "P01": {
         "finish": 76,
         "turnaround": 76,
         "waiting": 65,
         "response": 0
       },
-      "P2": {
+      "P02": {
         "finish": 104,
         "turnaround": 103,
         "waiting": 99,
         "response": 99
       },
-      "P3": {
+      "P03": {
         "finish": 112,
         "turnaround": 110,
         "waiting": 102,
         "response": 6
       },
-      "P4": {
+      "P04": {
         "finish": 7,
         "turnaround": 3,
         "waiting": 2,
         "response": 2
       },
-      "P5": {
+      "P05": {
         "finish": 83,
         "turnaround": 79,
         "waiting": 76,
         "response": 76
       },
-      "P6": {
+      "P06": {
         "finish": 22,
         "turnaround": 16,
         "waiting": 11,
         "response": 9
       },
-      "P7": {
+      "P07": {
         "finish": 12,
         "turnaround": 2,
         "waiting": 1,
         "response": 1
       },
-      "P8": {
+      "P08": {
         "finish": 50,
         "turnaround": 39,
         "waiting": 33,
         "response": 32
       },
-      "P9": {
+      "P09": {
         "finish": 130,
         "turnaround": 118,
         "waiting": 112,
@@ -341,55 +341,55 @@
   },
   "SJF (preemptive)": {
     "per_process": {
-      "P1": {
+      "P01": {
         "finish": 80,
         "turnaround": 80,
         "waiting": 69,
         "response": 0
       },
-      "P2": {
+      "P02": {
         "finish": 109,
         "turnaround": 108,
         "waiting": 104,
         "response": 100
       },
-      "P3": {
+      "P03": {
         "finish": 114,
         "turnaround": 112,
         "waiting": 104,
         "response": 1
       },
-      "P4": {
+      "P04": {
         "finish": 7,
         "turnaround": 3,
         "waiting": 2,
         "response": 2
       },
-      "P5": {
+      "P05": {
         "finish": 84,
         "turnaround": 80,
         "waiting": 77,
         "response": 77
       },
-      "P6": {
+      "P06": {
         "finish": 17,
         "turnaround": 11,
         "waiting": 6,
         "response": 2
       },
-      "P7": {
+      "P07": {
         "finish": 12,
         "turnaround": 2,
         "waiting": 1,
         "response": 1
       },
-      "P8": {
+      "P08": {
         "finish": 45,
         "turnaround": 34,
         "waiting": 28,
         "response": 9
       },
-      "P9": {
+      "P09": {
         "finish": 132,
         "turnaround": 120,
         "waiting": 114,
@@ -511,55 +511,55 @@
   },
   "Priority": {
     "per_process": {
-      "P1": {
+      "P01": {
         "finish": 52,
         "turnaround": 52,
         "waiting": 41,
         "response": 0
       },
-      "P2": {
+      "P02": {
         "finish": 10,
         "turnaround": 9,
         "waiting": 5,
         "response": 5
       },
-      "P3": {
+      "P03": {
         "finish": 102,
         "turnaround": 100,
         "waiting": 92,
         "response": 77
       },
-      "P4": {
+      "P04": {
         "finish": 33,
         "turnaround": 29,
         "waiting": 28,
         "response": 28
       },
-      "P5": {
+      "P05": {
         "finish": 114,
         "turnaround": 110,
         "waiting": 107,
         "response": 107
       },
-      "P6": {
+      "P06": {
         "finish": 23,
         "turnaround": 17,
         "waiting": 12,
         "response": 5
       },
-      "P7": {
+      "P07": {
         "finish": 54,
         "turnaround": 44,
         "waiting": 43,
         "response": 43
       },
-      "P8": {
+      "P08": {
         "finish": 105,
         "turnaround": 94,
         "waiting": 88,
         "response": 73
       },
-      "P9": {
+      "P09": {
         "finish": 20,
         "turnaround": 8,
         "waiting": 2,
@@ -681,55 +681,55 @@
   },
   "Round Robin": {
     "per_process": {
-      "P1": {
+      "P01": {
         "finish": 26,
         "turnaround": 26,
         "waiting": 15,
         "response": 0
       },
-      "P2": {
+      "P02": {
         "finish": 10,
         "turnaround": 9,
         "waiting": 5,
         "response": 5
       },
-      "P3": {
+      "P03": {
         "finish": 48,
         "turnaround": 46,
         "waiting": 38,
         "response": 9
       },
-      "P4": {
+      "P04": {
         "finish": 15,
         "turnaround": 11,
         "waiting": 10,
         "response": 10
       },
-      "P5": {
+      "P05": {
         "finish": 19,
         "turnaround": 15,
         "waiting": 12,
         "response": 12
       },
-      "P6": {
+      "P06": {
         "finish": 71,
         "turnaround": 65,
         "waiting": 60,
         "response": 14
       },
-      "P7": {
+      "P07": {
         "finish": 28,
         "turnaround": 18,
         "waiting": 17,
         "response": 17
       },
-      "P8": {
+      "P08": {
         "finish": 97,
         "turnaround": 86,
         "waiting": 80,
         "response": 18
       },
-      "P9": {
+      "P09": {
         "finish": 104,
         "turnaround": 92,
         "waiting": 86,

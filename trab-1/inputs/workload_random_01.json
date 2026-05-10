@@ -23,7 +23,7 @@
       ]
     },
     {
-      "pid": "P3",
+      "pid": "P03",
       "arrival": 5,
       "priority": 2,
       "bursts": [
@@ -43,7 +43,7 @@
       ]
     },
     {
-      "pid": "P2",
+      "pid": "P02",
       "arrival": 8,
       "priority": 1,
       "bursts": [
@@ -59,7 +59,7 @@
       ]
     },
     {
-      "pid": "P6",
+      "pid": "P06",
       "arrival": 21,
       "priority": 3,
       "bursts": [
@@ -91,7 +91,7 @@
       ]
     },
     {
-      "pid": "P8",
+      "pid": "P08",
       "arrival": 24,
       "priority": 1,
       "bursts": [
@@ -107,7 +107,7 @@
       ]
     },
     {
-      "pid": "P4",
+      "pid": "P04",
       "arrival": 35,
       "priority": 2,
       "bursts": [
@@ -137,7 +137,7 @@
       ]
     },
     {
-      "pid": "P9",
+      "pid": "P09",
       "arrival": 46,
       "priority": 4,
       "bursts": [
@@ -147,7 +147,7 @@
       ]
     },
     {
-      "pid": "P1",
+      "pid": "P01",
       "arrival": 47,
       "priority": 3,
       "bursts": [
@@ -155,7 +155,7 @@
       ]
     },
     {
-      "pid": "P7",
+      "pid": "P07",
       "arrival": 48,
       "priority": 3,
       "bursts": [
@@ -175,7 +175,7 @@
       ]
     },
     {
-      "pid": "P5",
+      "pid": "P05",
       "arrival": 51,
       "priority": 1,
       "bursts": [

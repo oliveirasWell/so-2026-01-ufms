@@ -34,17 +34,11 @@ Simulador event-driven de algoritmos de escalonamento de CPU: FCFS, SJF preempti
 ### Critério de desempate
 
 Quando duas ou mais decisões empatam (mesma burst restante em SJF, mesma
-prioridade, mesmo instante de E/S concluída, etc.), o
-desempate é feito `pid`. Como os `pid`s usados
-nos workloads (`P1`, `P2`, …, `P27`) diferem da ordem numérica:
-
-```
-ordem lexicográfica:  P1 < P10 < P11 < … < P19 < P2 < P20 < … < P27 < P3 < …
-```
-
-Ou seja, em caso de empate, `P10` é escolhido antes de `P2`. Para evitar
-essa surpresa em workloads novos, use `pid`s zero-padded (`P01`, `P02`,
-…, `P27`) ou nomes que ordenem como esperado.
+prioridade, mesmo instante de E/S concluída, etc.), o desempate é feito
+pelo `pid` em ordem lexicográfica. Para que isso coincida com a ordem
+numérica, todos os workloads em `inputs/` usam `pid`s zero-padded
+(`P01`, `P02`, …, `P27`). Workloads novos devem seguir a mesma
+convenção (ou usar nomes que ordenem como esperado).
 
 ## Requisitos
 
@@ -97,7 +91,7 @@ Arquivo **JSON**, usuário garante que irá utilizar arquivo com padrão correto
   "quantum": 0, 
   "context_switch_cost": 0,
   "processes": [
-    {"pid": "P1", "arrival": 0, "priority": 1, "bursts": [5, 3, 3]}
+    {"pid": "P01", "arrival": 0, "priority": 1, "bursts": [5, 3, 3]}
   ]
 }
 ```

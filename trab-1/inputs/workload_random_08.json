@@ -3,7 +3,7 @@
   "context_switch_cost": 0,
   "processes": [
     {
-      "pid": "P3",
+      "pid": "P03",
       "arrival": 0,
       "priority": 4,
       "bursts": [
@@ -11,7 +11,7 @@
       ]
     },
     {
-      "pid": "P1",
+      "pid": "P01",
       "arrival": 6,
       "priority": 3,
       "bursts": [
@@ -23,7 +23,7 @@
       ]
     },
     {
-      "pid": "P9",
+      "pid": "P09",
       "arrival": 13,
       "priority": 3,
       "bursts": [
@@ -53,7 +53,7 @@
       ]
     },
     {
-      "pid": "P6",
+      "pid": "P06",
       "arrival": 20,
       "priority": 2,
       "bursts": [
@@ -63,7 +63,7 @@
       ]
     },
     {
-      "pid": "P7",
+      "pid": "P07",
       "arrival": 28,
       "priority": 2,
       "bursts": [
@@ -81,7 +81,7 @@
       ]
     },
     {
-      "pid": "P8",
+      "pid": "P08",
       "arrival": 31,
       "priority": 3,
       "bursts": [
@@ -113,7 +113,7 @@
       ]
     },
     {
-      "pid": "P5",
+      "pid": "P05",
       "arrival": 39,
       "priority": 4,
       "bursts": [
@@ -125,7 +125,7 @@
       ]
     },
     {
-      "pid": "P4",
+      "pid": "P04",
       "arrival": 40,
       "priority": 4,
       "bursts": [
@@ -135,7 +135,7 @@
       ]
     },
     {
-      "pid": "P2",
+      "pid": "P02",
       "arrival": 42,
       "priority": 3,
       "bursts": [
