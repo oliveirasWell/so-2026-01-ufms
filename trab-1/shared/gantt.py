@@ -1,7 +1,7 @@
-from models.simulation.constants import CS_PID, IDLE_PID
-from models.simulation.event import Event
-from models.simulation.gantt_slice import GanttSlice
 from models.simulation.simulation_result import SimulationResult
+from models.simulation.trace.constants import CS_PID, IDLE_PID
+from models.simulation.trace.event import Event
+from models.visualization.gantt_slice import GanttSlice
 
 
 def build_gantt(result: SimulationResult) -> tuple[GanttSlice, ...]:

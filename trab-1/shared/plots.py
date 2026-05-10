@@ -5,9 +5,9 @@ from matplotlib.lines import Line2D
 from shared.constants import COMPARISON_METRICS
 from shared.gantt import build_gantt
 from models.metrics.metrics_report import MetricsReport
-from models.simulation.constants import CS_PID, IDLE_PID
-from models.simulation.gantt_slice import GanttSlice
 from models.simulation.simulation_result import SimulationResult
+from models.simulation.trace.constants import CS_PID, IDLE_PID
+from models.visualization.gantt_slice import GanttSlice
 
 _NEUTRAL_COLOR = "#bdbdbd"
 _CS_COLOR = "#9e9e9e"

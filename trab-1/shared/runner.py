@@ -1,7 +1,7 @@
 from models.metrics.metrics_report import MetricsReport
 from models.process.workload import Workload
-from models.simulation.gantt_slice import GanttSlice
 from models.simulation.simulation_result import SimulationResult
+from models.visualization.gantt_slice import GanttSlice
 from schedulers.instantiate_schedulers import instantiate_schedulers
 from shared.gantt import build_gantt
 from shared.metrics import compute_metrics
@@ -24,7 +24,7 @@ def run_simulation(
         result = Simulator(workload, scheduler).run()
         gantt = build_gantt(result)
         report = compute_metrics(result, gantt=gantt)
-        
+
         results.append(result)
         gantts.append(gantt)
         reports.append(report)

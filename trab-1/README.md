@@ -1,16 +1,60 @@
 # trab-1 — Simulador de Escalonamento
 
-Simulador event-driven de algoritmos de escalonamento de CPU: FCFS, SJF (preemptivo e não-preemptivo), Priority e Round Robin.
+Simulador event-driven de algoritmos de escalonamento de CPU: FCFS, SJF preemptivo e não-preemptivo, Prioridade e Round Robin.
+
+- Controle de burts 
+- Controle de entrada e saída
+- Preempção
+- Quantum de utilização
+- Tempo gasto em troca de contexto
+
+## Algoritmos implementados
+
+- FCFS (First-Come, First-Served) — não-preemptivo. A fila de prontos é
+  atendida pela ordem de chegada: o processo que entrou primeiro
+  na fila roda até terminar a rajada de CPU (ou bloquear em E/S).
+
+- SJF (Shortest Job First) — não-preemptivo. A cada decisão de despacho,
+  escolhe o processo da fila de prontos com a menor rajada de CPU restante.
+  
+- SJF preemptivo (SRTF — Shortest Remaining Time First) — Sempre que um novo processo chega (ou volta de E/S) à
+  fila de prontos com burst de CPU restante estritamente menor que a do
+  processo em execução, o atual é preemptado e o mais curto assume a CPU.
+
+- Prioridade — não-preemptivo, Cada processo carrega um valor inteiro de prioridade;
+  o escalonador escolhe sempre o processo de menor valor numérico
+  (convenção: `1` é a prioridade mais alta).
+  Empates entre prioridades caem no critério de desempate (ver
+  abaixo).
+
+- Round Robin — preemptivo por tempo. Processo atual executa por até `quantum` ticks de CPU e, se não
+  terminar o burst nesse intervalo, é preemptado e reinserido no fim da
+  fila.
+
+### Critério de desempate
+
+Quando duas ou mais decisões empatam (mesma burst restante em SJF, mesma
+prioridade, mesmo instante de E/S concluída, etc.), o
+desempate é feito `pid`. Como os `pid`s usados
+nos workloads (`P1`, `P2`, …, `P27`) diferem da ordem numérica:
+
+```
+ordem lexicográfica:  P1 < P10 < P11 < … < P19 < P2 < P20 < … < P27 < P3 < …
+```
+
+Ou seja, em caso de empate, `P10` é escolhido antes de `P2`. Para evitar
+essa surpresa em workloads novos, use `pid`s zero-padded (`P01`, `P02`,
+…, `P27`) ou nomes que ordenem como esperado.
 
 ## Requisitos
 
 - Python 3.10+
-- `matplotlib` + `notebook` opcionais, só para o `notebook.ipynb`
+- `matplotlib`
+- `notebook` opcionais para `notebook.ipynb`
 
-### Setup do venv (necessário p/ notebook em macOS com Python do Homebrew)
+### Setup
 
 ```bash
-cd trab-1
 python3 -m venv .venv
 source .venv/bin/activate
 pip install notebook matplotlib
@@ -45,27 +89,15 @@ python test_simulator.py
 
 ## Formato do workload
 
-Arquivo **JSON** UTF-8, lido por `shared.parser.parse_input`.
+Arquivo **JSON**, usuário garante que irá utilizar arquivo com padrão correto.
 
-Objeto raiz:
 
-- `quantum` (opcional, padrão `0`) — quantum do Round Robin.
-- `context_switch_cost` (opcional, padrão `0`) — custo de cada troca de contexto.
-- `processes` — array de processos.
-
-Cada processo:
-
-- `pid` (string), `arrival` (int ≥ 0), `bursts` (array de int > 0, **tamanho ímpar**: CPU, E/S, …, CPU).
-- `priority` (opcional, padrão `1`). Menor valor = mais prioritário no escalonador por prioridade.
-
-Exemplo mínimo:
-
-```json
+```
 {
-  "quantum": 2,
+  "quantum": 0, 
   "context_switch_cost": 0,
   "processes": [
-    { "pid": "P1", "arrival": 0, "priority": 2, "bursts": [5, 3, 3] }
+    {"pid": "P1", "arrival": 0, "priority": 1, "bursts": [5, 3, 3]}
   ]
 }
 ```
@@ -74,13 +106,17 @@ Exemplo mínimo:
 
 | arquivo | descrição |
 |---------|-----------|
-| `workload.json` | carga padrão do projeto (vários processos, mix CPU/E/S) |
+| `workload.json` | carga padrão do projeto (27 processos, mix CPU/E/S, `quantum=5`, `cs=1`) |
+| `workload_simple.json` | carga simples, somente CPU, sem `quantum` e sem `context_switch_cost` |
+| `workload_random_01.json` … `workload_random_10.json` | 10 cargas aleatórias usadas pelo notebook para a média do experimento de Round Robin variando o `quantum` |
 
 ## Notebook
+
+Para melhor vizualiação foi criado um jupiter notebook para comparação dos traços de cada execução, disponível em::
+
 
 ```bash
 source .venv/bin/activate   # se ainda não estiver ativo
 jupyter notebook notebook.ipynb
 ```
 
-Cobre: tabela comparativa, Gantt por algoritmo, barras por métrica, e exploração de `cs_cost in {0,1,2}`.

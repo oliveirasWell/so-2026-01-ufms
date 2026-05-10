@@ -1,0 +1,178 @@
+{
+  "quantum": 0,
+  "context_switch_cost": 0,
+  "processes": [
+    {
+      "pid": "P12",
+      "arrival": 2,
+      "priority": 2,
+      "bursts": [
+        23,
+        11,
+        16,
+        8,
+        5
+      ]
+    },
+    {
+      "pid": "P11",
+      "arrival": 5,
+      "priority": 2,
+      "bursts": [
+        14,
+        6,
+        22,
+        20,
+        25
+      ]
+    },
+    {
+      "pid": "P16",
+      "arrival": 8,
+      "priority": 4,
+      "bursts": [
+        33,
+        5,
+        19,
+        7,
+        33
+      ]
+    },
+    {
+      "pid": "P9",
+      "arrival": 13,
+      "priority": 4,
+      "bursts": [
+        4,
+        13,
+        22
+      ]
+    },
+    {
+      "pid": "P15",
+      "arrival": 14,
+      "priority": 2,
+      "bursts": [
+        31
+      ]
+    },
+    {
+      "pid": "P1",
+      "arrival": 22,
+      "priority": 4,
+      "bursts": [
+        21,
+        6,
+        21
+      ]
+    },
+    {
+      "pid": "P4",
+      "arrival": 24,
+      "priority": 2,
+      "bursts": [
+        24,
+        17,
+        11
+      ]
+    },
+    {
+      "pid": "P7",
+      "arrival": 25,
+      "priority": 3,
+      "bursts": [
+        11,
+        13,
+        23,
+        17,
+        24
+      ]
+    },
+    {
+      "pid": "P10",
+      "arrival": 32,
+      "priority": 4,
+      "bursts": [
+        24,
+        18,
+        32,
+        18,
+        17
+      ]
+    },
+    {
+      "pid": "P5",
+      "arrival": 33,
+      "priority": 2,
+      "bursts": [
+        6,
+        17,
+        4
+      ]
+    },
+    {
+      "pid": "P2",
+      "arrival": 37,
+      "priority": 3,
+      "bursts": [
+        25,
+        4,
+        11,
+        12,
+        15
+      ]
+    },
+    {
+      "pid": "P3",
+      "arrival": 38,
+      "priority": 4,
+      "bursts": [
+        10
+      ]
+    },
+    {
+      "pid": "P6",
+      "arrival": 39,
+      "priority": 3,
+      "bursts": [
+        31,
+        6,
+        25
+      ]
+    },
+    {
+      "pid": "P8",
+      "arrival": 39,
+      "priority": 3,
+      "bursts": [
+        12,
+        10,
+        30,
+        16,
+        15
+      ]
+    },
+    {
+      "pid": "P13",
+      "arrival": 40,
+      "priority": 2,
+      "bursts": [
+        8,
+        18,
+        30
+      ]
+    },
+    {
+      "pid": "P14",
+      "arrival": 41,
+      "priority": 1,
+      "bursts": [
+        28,
+        19,
+        29,
+        11,
+        13
+      ]
+    }
+  ]
+}

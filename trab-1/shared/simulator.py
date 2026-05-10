@@ -1,9 +1,9 @@
 from models.process.runtime_process import RuntimeProcess
 from models.process.workload import Workload
-from models.simulation.constants import IDLE_PID
-from models.simulation.event import Event
 from models.simulation.simulation_result import SimulationResult
-from models.simulation.trace_entry import TraceEntry
+from models.simulation.trace.constants import IDLE_PID
+from models.simulation.trace.event import Event
+from models.simulation.trace.trace_entry import TraceEntry
 from schedulers.base import Scheduler
 
 
@@ -34,7 +34,7 @@ class Simulator:
                 # finish the simulation if there are no blocked or arriving processes
                 if not self.blocked and not self.not_arrived:
                     break
-                
+
                 # if there are no blocked or arriving processes, idle the CPU
                 self._idle_tick()
                 continue
@@ -112,7 +112,7 @@ class Simulator:
                 running.finish = self.current_time
                 self.running = None
                 self._emit(Event.TERMINATE, running.pid)
-            
+
             return
 
         if self.scheduler.should_preempt(running, self.ready, self.current_time):

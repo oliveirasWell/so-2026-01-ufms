@@ -2,20 +2,17 @@ from statistics import mean
 
 from models.metrics.metrics_report import MetricsReport
 from models.metrics.process_metrics import ProcessMetrics
-from models.simulation.constants import CS_PID, IDLE_PID
-from models.simulation.event import Event
-from models.simulation.gantt_slice import GanttSlice
 from models.simulation.simulation_result import SimulationResult
+from models.simulation.trace.constants import CS_PID, IDLE_PID
+from models.simulation.trace.event import Event
+from models.visualization.gantt_slice import GanttSlice
 from shared.gantt import build_gantt
 
 
 def compute_metrics(
     result: SimulationResult,
-    gantt: tuple[GanttSlice, ...] | None = None,
+    gantt: tuple[GanttSlice, ...],
 ) -> MetricsReport:
-    if gantt is None:
-        gantt = build_gantt(result)
-
     first_dispatch: dict[str, int] = {}
     finish: dict[str, int] = {}
 

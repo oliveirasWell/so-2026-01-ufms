@@ -1,0 +1,108 @@
+{
+  "quantum": 0,
+  "context_switch_cost": 0,
+  "processes": [
+    {
+      "pid": "P10",
+      "arrival": 1,
+      "priority": 2,
+      "bursts": [
+        23,
+        11,
+        18
+      ]
+    },
+    {
+      "pid": "P7",
+      "arrival": 1,
+      "priority": 2,
+      "bursts": [
+        30
+      ]
+    },
+    {
+      "pid": "P4",
+      "arrival": 2,
+      "priority": 3,
+      "bursts": [
+        6,
+        15,
+        13,
+        17,
+        12
+      ]
+    },
+    {
+      "pid": "P9",
+      "arrival": 12,
+      "priority": 4,
+      "bursts": [
+        6,
+        19,
+        18
+      ]
+    },
+    {
+      "pid": "P2",
+      "arrival": 35,
+      "priority": 1,
+      "bursts": [
+        20,
+        9,
+        32,
+        21,
+        31
+      ]
+    },
+    {
+      "pid": "P5",
+      "arrival": 43,
+      "priority": 2,
+      "bursts": [
+        6,
+        15,
+        17
+      ]
+    },
+    {
+      "pid": "P3",
+      "arrival": 44,
+      "priority": 2,
+      "bursts": [
+        8
+      ]
+    },
+    {
+      "pid": "P1",
+      "arrival": 49,
+      "priority": 2,
+      "bursts": [
+        25
+      ]
+    },
+    {
+      "pid": "P8",
+      "arrival": 50,
+      "priority": 1,
+      "bursts": [
+        25,
+        17,
+        19,
+        12,
+        14
+      ]
+    },
+    {
+      "pid": "P6",
+      "arrival": 55,
+      "priority": 2,
+      "bursts": [
+        10,
+        15,
+        30,
+        8,
+        19
+      ]
+    }
+  ]
+}

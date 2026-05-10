@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from models.simulation.trace_entry import TraceEntry
+from models.simulation.trace.trace_entry import TraceEntry
 from models.process.workload import Workload
 
 

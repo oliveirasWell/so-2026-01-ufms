@@ -1,0 +1,150 @@
+{
+  "quantum": 0,
+  "context_switch_cost": 0,
+  "processes": [
+    {
+      "pid": "P3",
+      "arrival": 0,
+      "priority": 4,
+      "bursts": [
+        25
+      ]
+    },
+    {
+      "pid": "P1",
+      "arrival": 6,
+      "priority": 3,
+      "bursts": [
+        28,
+        16,
+        16,
+        6,
+        19
+      ]
+    },
+    {
+      "pid": "P9",
+      "arrival": 13,
+      "priority": 3,
+      "bursts": [
+        35
+      ]
+    },
+    {
+      "pid": "P14",
+      "arrival": 17,
+      "priority": 3,
+      "bursts": [
+        25,
+        15,
+        33
+      ]
+    },
+    {
+      "pid": "P12",
+      "arrival": 18,
+      "priority": 2,
+      "bursts": [
+        34,
+        19,
+        32,
+        4,
+        9
+      ]
+    },
+    {
+      "pid": "P6",
+      "arrival": 20,
+      "priority": 2,
+      "bursts": [
+        31,
+        22,
+        21
+      ]
+    },
+    {
+      "pid": "P7",
+      "arrival": 28,
+      "priority": 2,
+      "bursts": [
+        21
+      ]
+    },
+    {
+      "pid": "P13",
+      "arrival": 30,
+      "priority": 3,
+      "bursts": [
+        19,
+        13,
+        27
+      ]
+    },
+    {
+      "pid": "P8",
+      "arrival": 31,
+      "priority": 3,
+      "bursts": [
+        28,
+        14,
+        5
+      ]
+    },
+    {
+      "pid": "P10",
+      "arrival": 35,
+      "priority": 1,
+      "bursts": [
+        25,
+        12,
+        21
+      ]
+    },
+    {
+      "pid": "P11",
+      "arrival": 35,
+      "priority": 2,
+      "bursts": [
+        16,
+        6,
+        19,
+        17,
+        35
+      ]
+    },
+    {
+      "pid": "P5",
+      "arrival": 39,
+      "priority": 4,
+      "bursts": [
+        13,
+        17,
+        15,
+        20,
+        21
+      ]
+    },
+    {
+      "pid": "P4",
+      "arrival": 40,
+      "priority": 4,
+      "bursts": [
+        10,
+        17,
+        27
+      ]
+    },
+    {
+      "pid": "P2",
+      "arrival": 42,
+      "priority": 3,
+      "bursts": [
+        11,
+        22,
+        6,
+        15,
+        31
+      ]
+    }
+  ]
+}

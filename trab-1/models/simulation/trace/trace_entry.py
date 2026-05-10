@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from models.simulation.event import Event
+from models.simulation.trace.event import Event
 
 
 @dataclass(frozen=True)
