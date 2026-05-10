@@ -1,5 +1,3 @@
-from collections.abc import Callable
-
 from models.process.workload import Workload
 from schedulers.base import Scheduler
 from schedulers.fcfs import FCFS
@@ -7,8 +5,7 @@ from schedulers.priority import Priority
 from schedulers.round_robin import RoundRobin
 from schedulers.sjf import SJF
 
-# Single source of truth: (CLI flag, factory). Order is the comparison order in run_all.
-_SCHEDULER_ENTRIES: tuple[tuple[str, Callable[[Workload], Scheduler]], ...] = (
+_SCHEDULER_ENTRIES = (
     ("fcfs", lambda _w: FCFS()),
     ("sjf", lambda _w: SJF(preemptive=False)),
     ("sjf-preemptive", lambda _w: SJF(preemptive=True)),
@@ -16,8 +13,10 @@ _SCHEDULER_ENTRIES: tuple[tuple[str, Callable[[Workload], Scheduler]], ...] = (
     ("round-robin", lambda w: RoundRobin(w.quantum)),
 )
 
-SCHEDULER_FACTORIES: dict[str, Callable[[Workload], Scheduler]] = dict(_SCHEDULER_ENTRIES)
+SCHEDULER_FACTORIES = dict(_SCHEDULER_ENTRIES)
+_ALL_KEYS = tuple(k for k, _ in _SCHEDULER_ENTRIES)
 
 
-def build_algorithms(workload: Workload) -> tuple[Scheduler, ...]:
-    return tuple(factory(workload) for _, factory in _SCHEDULER_ENTRIES)
+def instantiate_schedulers(workload: Workload, algo: str | None = None) -> tuple[Scheduler, ...]:
+    keys = _ALL_KEYS if algo is None else (algo,)
+    return tuple(SCHEDULER_FACTORIES[k](workload) for k in keys)

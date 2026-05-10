@@ -9,7 +9,6 @@ class RuntimeProcess:
     burst_index: int = 0
     cpu_remaining: int = 0
     io_remaining: int = 0
-    first_dispatch: int | None = None
     finish: int | None = None
 
     @property

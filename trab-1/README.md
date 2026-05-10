@@ -4,7 +4,7 @@ Simulador event-driven de algoritmos de escalonamento de CPU: FCFS, SJF (preempt
 
 ## Requisitos
 
-- Python 3.10+ (stdlib apenas para o simulador)
+- Python 3.10+
 - `matplotlib` + `notebook` opcionais, só para o `notebook.ipynb`
 
 ### Setup do venv (necessário p/ notebook em macOS com Python do Homebrew)
@@ -23,7 +23,7 @@ Depois de criado, basta `source .venv/bin/activate` em sessões futuras.
 A partir da pasta `trab-1/`:
 
 ```bash
-# comparação de todos os algoritmos no workload default (inputs/workload.txt)
+# comparação de todos os algoritmos no workload default (inputs/workload.json)
 python main.py
 
 # um algoritmo específico
@@ -36,53 +36,45 @@ python main.py --algo round-robin
 # adicionar trace evento-a-evento
 python main.py --algo round-robin --trace
 
-# usar outro arquivo de workload
-python main.py --input inputs/workload-io-heavy.txt
-python main.py --algo round-robin --input inputs/workload-cs-cost.txt
+# usar outro arquivo de workload (JSON)
+python main.py --input caminho/para/outro.json
 
-# rodar o teste de aceitação (spec seção 11)
-python validate.py
+# regressão de métricas (snapshot)
+python test_simulator.py
 ```
 
 ## Formato do workload
 
-Arquivo texto UTF-8. Linhas começando com `#` (ou tudo após `#` inline) são ignoradas.
+Arquivo **JSON** UTF-8, lido por `shared.parser.parse_input`.
 
-Headers (case-insensitive):
+Objeto raiz:
 
-- `quantum=<int>` — obrigatório se for executar Round Robin.
-- `cs_cost=<int>` — opcional, default `0`. Custo de troca de contexto.
+- `quantum` (opcional, padrão `0`) — quantum do Round Robin.
+- `context_switch_cost` (opcional, padrão `0`) — custo de cada troca de contexto.
+- `processes` — array de processos.
 
-Linha de processo:
+Cada processo:
 
+- `pid` (string), `arrival` (int ≥ 0), `bursts` (array de int > 0, **tamanho ímpar**: CPU, E/S, …, CPU).
+- `priority` (opcional, padrão `1`). Menor valor = mais prioritário no escalonador por prioridade.
+
+Exemplo mínimo:
+
+```json
+{
+  "quantum": 2,
+  "context_switch_cost": 0,
+  "processes": [
+    { "pid": "P1", "arrival": 0, "priority": 2, "bursts": [5, 3, 3] }
+  ]
+}
 ```
-pid arrival priority cpu1 [io1 cpu2 [io2 cpu3 ...]]
-```
 
-- `bursts` deve ter tamanho **ímpar** (CPU IO CPU IO ... CPU), todos > 0.
-- Menor `priority` = mais prioritário.
+## Workloads em `inputs/`
 
-Exemplo:
-
-```
-quantum=2
-P1 0 2 5 3 3
-P2 1 1 4
-P3 2 3 2 2 4
-P4 4 2 1
-```
-
-## Workloads disponíveis em `inputs/`
-
-| arquivo | foco |
-|---|---|
-| `workload.txt` | gabarito da spec (4 processos, mix CPU+I/O) |
-| `workload-cpu-bound.txt` | só CPU, sem I/O — destaca diferenças entre FCFS/SJF/RR |
-| `workload-io-heavy.txt` | muitos bursts de I/O em paralelo |
-| `workload-priority-inversion.txt` | prioridades favorecem job longo, cenário que penaliza Priority |
-| `workload-large.txt` | 8 processos, mix variado |
-| `workload-cs-cost.txt` | igual ao default + `cs_cost=1` para ver impacto de troca de contexto |
-| `workload-tiebreak.txt` | múltiplos processos chegando ao mesmo tempo, força critérios de desempate |
+| arquivo | descrição |
+|---------|-----------|
+| `workload.json` | carga padrão do projeto (vários processos, mix CPU/E/S) |
 
 ## Notebook
 
@@ -92,15 +84,3 @@ jupyter notebook notebook.ipynb
 ```
 
 Cobre: tabela comparativa, Gantt por algoritmo, barras por métrica, e exploração de `cs_cost in {0,1,2}`.
-
-## Estrutura
-
-```
-trab-1/
-  main.py            # CLI
-  validate.py        # teste de aceitação
-  notebook.ipynb     # exploração visual
-  inputs/            # workloads
-  schedulers/        # FCFS, SJF, Priority, Round Robin (Scheduler ABC em base.py)
-  shared/            # process, parser, simulator, metrics, comparison, reporter, plots
-```

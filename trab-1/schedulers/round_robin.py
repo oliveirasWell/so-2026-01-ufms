@@ -8,8 +8,6 @@ class RoundRobin(Scheduler):
     name: ClassVar[str] = "Round Robin"
 
     def __init__(self, quantum: int) -> None:
-        if quantum <= 0:
-            raise ValueError("Round Robin requires positive quantum")
         self._quantum = quantum
         self._dispatched_at = 0
 
@@ -25,4 +23,6 @@ class RoundRobin(Scheduler):
         ready: list[RuntimeProcess],
         now: int,
     ) -> bool:
+        # now - last time the process was dispatched >= quantum
+        # if the process has been dispatched for longer than the quantum, preempt it
         return now - self._dispatched_at >= self._quantum

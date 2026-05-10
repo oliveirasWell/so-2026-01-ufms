@@ -1,9 +1,17 @@
 import sys
 from typing import TextIO
 
-from shared.comparison import COMPARISON_METRICS
+from shared.constants import COMPARISON_METRICS
+from shared.evaluation import pick_winners
 from models.metrics.metrics_report import MetricsReport
 from models.simulation.simulation_result import SimulationResult
+
+
+def print_reports(reports: list[MetricsReport], file: TextIO | None = None) -> None:
+    if len(reports) > 1:
+        print_comparison(reports, pick_winners(reports), file=file)
+    else:
+        print_metrics(reports[0], file=file)
 
 
 def print_metrics(report: MetricsReport, file: TextIO | None = None) -> None:
@@ -27,7 +35,7 @@ def print_trace(result: SimulationResult, file: TextIO | None = None) -> None:
     out = file or sys.stdout
     headers = ("time", "event", "pid", "running", "ready", "blocked")
     rows = [
-        (str(e.time), e.event.value, e.pid or "-", e.running or "-",
+        (str(e.time), e.event.value, e.pid, e.running or "-",
          ",".join(e.ready_queue) or "-", ",".join(e.blocked) or "-")
         for e in result.trace
     ]

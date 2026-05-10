@@ -4,16 +4,22 @@ from models.metrics.metrics_report import MetricsReport
 from models.metrics.process_metrics import ProcessMetrics
 from models.simulation.constants import CS_PID, IDLE_PID
 from models.simulation.event import Event
+from models.simulation.gantt_slice import GanttSlice
 from models.simulation.simulation_result import SimulationResult
+from shared.gantt import build_gantt
 
 
-def compute_metrics(result: SimulationResult) -> MetricsReport:
+def compute_metrics(
+    result: SimulationResult,
+    gantt: tuple[GanttSlice, ...] | None = None,
+) -> MetricsReport:
+    if gantt is None:
+        gantt = build_gantt(result)
+
     first_dispatch: dict[str, int] = {}
     finish: dict[str, int] = {}
 
     for entry in result.trace:
-        if entry.pid is None:
-            continue
         if entry.event == Event.DISPATCH and entry.pid not in first_dispatch:
             first_dispatch[entry.pid] = entry.time
         elif entry.event == Event.TERMINATE:
@@ -36,8 +42,8 @@ def compute_metrics(result: SimulationResult) -> MetricsReport:
             )
         )
 
-    busy = sum(s.end - s.start for s in result.gantt if s.pid not in (IDLE_PID, CS_PID))
-    total = result.gantt[-1].end - result.gantt[0].start if result.gantt else 0
+    busy = sum(s.end - s.start for s in gantt if s.pid not in (IDLE_PID, CS_PID))
+    total = gantt[-1].end - gantt[0].start if gantt else 0
     utilization = busy / total if total > 0 else 0.0
 
     return MetricsReport(
