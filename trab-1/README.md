@@ -2,6 +2,7 @@
 
 Simulador event-driven de algoritmos de escalonamento de CPU: FCFS, SJF preemptivo e não-preemptivo, Prioridade e Round Robin.
 
+- Single CPU
 - Controle de burts 
 - Controle de entrada e saída
 - Preempção
@@ -30,6 +31,15 @@ Simulador event-driven de algoritmos de escalonamento de CPU: FCFS, SJF preempti
 - Round Robin — preemptivo por tempo. Processo atual executa por até `quantum` ticks de CPU e, se não
   terminar o burst nesse intervalo, é preemptado e reinserido no fim da
   fila.
+
+  ## Métricas avaliadas
+
+  As métricas utilizadas para avaliar os algoritmos de escalonamento neste trabalho são:
+
+  - Tempo médio de espera (Average Waiting Time)
+  - Tempo médio de execução (Average Turnaround Time): tempo médio decorrido entre o início (chegada) e a finalização do processo.
+  - Tempo médio de resposta (Average Response Time): tempo médio entre o instante de chegada do processo e o início de sua primeira execução.
+  - Tempo de CPU ociosa (CPU Idle Time): quantidade de tempo em que a CPU esteve sem executar processos.
 
 ### Critério de desempate
 
@@ -106,9 +116,9 @@ Arquivo **JSON**, usuário garante que irá utilizar arquivo com padrão correto
 
 ## Notebooks
 
-- **`notebook.ipynb`** — comparação dos algoritmos: gráficos de Gantt, métricas
-  agregadas e o experimento de Round Robin variando o `quantum`.
-- **`inputs.ipynb`** — explora os arquivos em `inputs/` antes de rodar
+- `notebook.ipynb` — comparação dos algoritmos: gráficos de Gantt, métricas
+  agregadas e o experimento de Round Robin variando o `quantum` e `cs`.
+- `inputs.ipynb` — explora os arquivos em `inputs/` antes de rodar
   qualquer algoritmo: tempo médio por processo, σ, mix CPU/E/S e
   comparação entre os 10 workloads aleatórios. Útil para entender como
   a forma do input influencia o resultado.
