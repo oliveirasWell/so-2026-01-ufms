@@ -1,5 +1,7 @@
 # trab-1 — Simulador de Escalonamento
 
+Aluno: Wellington de Oliveira dos Santos
+
 Simulador event-driven de algoritmos de escalonamento de CPU: FCFS, SJF preemptivo e não-preemptivo, Prioridade e Round Robin.
 
 - Single CPU
@@ -127,4 +129,9 @@ Arquivo **JSON**, usuário garante que irá utilizar arquivo com padrão correto
 source .venv/bin/activate   # se ainda não estiver ativo
 jupyter notebook notebook.ipynb   # ou inputs.ipynb
 ```
+
+### Referências e notas
+
+- O formato do input JSON segue a proposta clássica de Process Scheduling apresentada no livro “Operating System Concepts” de Silberschatz, Galvin e Gagne.
+- Foram utilizadas ferramentas de IA (Claude Code e Cursor) para auxiliar em parte a programação e a documentação deste projeto.
 
