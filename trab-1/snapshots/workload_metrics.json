@@ -167,7 +167,8 @@
     "avg_turnaround": 71.22222222222223,
     "avg_waiting": 65.77777777777777,
     "avg_response": 37.592592592592595,
-    "cpu_utilization": 0.7142857142857143
+    "cpu_utilization": 0.7142857142857143,
+    "throughput": 0.17532467532467533
   },
   "SJF": {
     "per_process": {
@@ -337,7 +338,8 @@
     "avg_turnaround": 58.25925925925926,
     "avg_waiting": 52.81481481481482,
     "avg_response": 41.370370370370374,
-    "cpu_utilization": 0.7142857142857143
+    "cpu_utilization": 0.7142857142857143,
+    "throughput": 0.17532467532467533
   },
   "SJF (preemptive)": {
     "per_process": {
@@ -507,7 +509,8 @@
     "avg_turnaround": 58.148148148148145,
     "avg_waiting": 52.7037037037037,
     "avg_response": 40.333333333333336,
-    "cpu_utilization": 0.7051282051282052
+    "cpu_utilization": 0.7051282051282052,
+    "throughput": 0.17307692307692307
   },
   "Priority": {
     "per_process": {
@@ -677,7 +680,8 @@
     "avg_turnaround": 65.03703703703704,
     "avg_waiting": 59.592592592592595,
     "avg_response": 52.7037037037037,
-    "cpu_utilization": 0.7096774193548387
+    "cpu_utilization": 0.7096774193548387,
+    "throughput": 0.17419354838709677
   },
   "Round Robin": {
     "per_process": {
@@ -847,6 +851,7 @@
     "avg_turnaround": 77.62962962962963,
     "avg_waiting": 72.18518518518519,
     "avg_response": 35.77777777777778,
-    "cpu_utilization": 0.6962025316455697
+    "cpu_utilization": 0.6962025316455697,
+    "throughput": 0.17088607594936708
   }
 }

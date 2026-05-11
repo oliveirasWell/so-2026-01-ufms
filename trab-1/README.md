@@ -104,13 +104,17 @@ Arquivo **JSON**, usuário garante que irá utilizar arquivo com padrão correto
 | `workload_simple.json` | carga simples, somente CPU, sem `quantum` e sem `context_switch_cost` |
 | `workload_random_01.json` … `workload_random_10.json` | 10 cargas aleatórias usadas pelo notebook para a média do experimento de Round Robin variando o `quantum` |
 
-## Notebook
+## Notebooks
 
-Para melhor vizualiação foi criado um jupiter notebook para comparação dos traços de cada execução, disponível em::
-
+- **`notebook.ipynb`** — comparação dos algoritmos: gráficos de Gantt, métricas
+  agregadas e o experimento de Round Robin variando o `quantum`.
+- **`inputs.ipynb`** — explora os arquivos em `inputs/` antes de rodar
+  qualquer algoritmo: tempo médio por processo, σ, mix CPU/E/S e
+  comparação entre os 10 workloads aleatórios. Útil para entender como
+  a forma do input influencia o resultado.
 
 ```bash
 source .venv/bin/activate   # se ainda não estiver ativo
-jupyter notebook notebook.ipynb
+jupyter notebook notebook.ipynb   # ou inputs.ipynb
 ```
 

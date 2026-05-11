@@ -42,6 +42,7 @@ def compute_metrics(
     busy = sum(s.end - s.start for s in gantt if s.pid not in (IDLE_PID, CS_PID))
     total = gantt[-1].end - gantt[0].start if gantt else 0
     utilization = busy / total if total > 0 else 0.0
+    throughput = len(per_process) / total if total > 0 else 0.0
 
     return MetricsReport(
         algorithm=result.algorithm,
@@ -50,4 +51,5 @@ def compute_metrics(
         avg_waiting=mean(pm.waiting for pm in per_process),
         avg_response=mean(pm.response for pm in per_process),
         cpu_utilization=utilization,
+        throughput=throughput,
     )

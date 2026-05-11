@@ -24,6 +24,7 @@ def aggregate_reports(runs: list[list[MetricsReport]]) -> list[MetricsReport]:
                 avg_waiting=mean(r[i].avg_waiting for r in runs),
                 avg_response=mean(r[i].avg_response for r in runs),
                 cpu_utilization=mean(r[i].cpu_utilization for r in runs),
+                throughput=mean(r[i].throughput for r in runs),
             )
         )
     return out
@@ -57,7 +58,8 @@ def print_metrics(report: MetricsReport, file: TextIO | None = None) -> None:
         f"avg_turnaround={report.avg_turnaround:.4f}  "
         f"avg_waiting={report.avg_waiting:.4f}  "
         f"avg_response={report.avg_response:.4f}  "
-        f"cpu_utilization={report.cpu_utilization:.4f}\n"
+        f"cpu_utilization={report.cpu_utilization:.4f}  "
+        f"throughput={report.throughput:.4f}\n"
     )
 
 
@@ -95,6 +97,7 @@ def print_comparison(
             f"{r.avg_waiting:.4f}",
             f"{r.avg_response:.4f}",
             f"{r.cpu_utilization:.4f}",
+            f"{r.throughput:.4f}",
         )) + "\n")
     out.write("\nWinner per metric\n")
     for metric in COMPARISON_METRICS:

@@ -27,6 +27,7 @@ def _snapshot(report) -> dict:
         "avg_waiting": report.avg_waiting,
         "avg_response": report.avg_response,
         "cpu_utilization": report.cpu_utilization,
+        "throughput": report.throughput,
     }
 
 

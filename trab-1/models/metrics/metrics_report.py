@@ -11,3 +11,4 @@ class MetricsReport:
     avg_waiting: float
     avg_response: float
     cpu_utilization: float
+    throughput: float
