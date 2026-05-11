@@ -36,9 +36,7 @@ def main() -> int:
     actual = {report.algorithm: _snapshot(report) for report in reports}
     expected = json.loads(_SNAPSHOT_JSON.read_text(encoding="utf-8"))
     if actual != expected:
-        raise AssertionError(
-            "métricas divergem do snapshot;"
-        )
+        raise AssertionError("metrics diverge from snapshot;")
     print("OK")
     return 0
 

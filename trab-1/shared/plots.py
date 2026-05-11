@@ -86,7 +86,7 @@ def plot_gantt(
                 markeredgecolor="black",
                 markersize=9,
                 linestyle="None",
-                label="chegada",
+                label="arrival",
             ),
         ],
         loc="upper right",

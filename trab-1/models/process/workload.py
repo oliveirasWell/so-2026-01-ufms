@@ -1,7 +1,7 @@
-"""Modelo imutável do *workload* carregado de JSON.
+"""Immutable model of the *workload* loaded from JSON.
 
-Para o formato JSON, defaults e regras de validação, veja o ``README.md``
-e ``shared.parser.parse_input``.
+For the JSON format, defaults, and validation rules, see ``README.md``
+and ``shared.parser.parse_input``.
 """
 
 from dataclasses import dataclass

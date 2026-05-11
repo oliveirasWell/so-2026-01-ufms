@@ -31,11 +31,9 @@ class Simulator:
             self._dispatch_if_ready()
 
             if self.running is None:
-                # finish the simulation if there are no blocked or arriving processes
                 if not self.blocked and not self.not_arrived:
                     break
 
-                # if there are no blocked or arriving processes, idle the CPU
                 self._idle_tick()
                 continue
 
@@ -54,9 +52,6 @@ class Simulator:
     def _advance_running_tick(self) -> None:
         assert self.running is not None
 
-        # advance the running process by 1 tick
-        # decrement the CPU remaining time
-        # useful for the scheduler to know when to preempt the process
         self.running.cpu_remaining -= 1
         self._tick_blocked_io()
         self.current_time += 1
@@ -95,30 +90,45 @@ class Simulator:
         if running is None:
             return
 
-        # handle burst end
         if running.cpu_remaining == 0:
-            # burst_index + 2 because the bursts are in the format [CPU, IO, CPU, ...]
-            next_idx = running.burst_index + 2
-            # if there are more bursts, add the next burst to the blocked queue
-            if next_idx < len(running.process.bursts):
-                running.io_remaining = running.process.bursts[running.burst_index + 1]
-                running.burst_index = next_idx
-                running.cpu_remaining = running.process.bursts[next_idx]
-                self.blocked.append(running)
-                self.running = None
-                self._emit(Event.CPU_BURST_END, running.pid)
-            else:
-                # if there are no more bursts, terminate the process
-                running.finish = self.current_time
-                self.running = None
-                self._emit(Event.TERMINATE, running.pid)
-
+            self._handle_cpu_burst_end(running)
             return
 
         if self.scheduler.should_preempt(running, self.ready, self.current_time):
-            self.ready.append(running)
-            self.running = None
-            self._emit(Event.PREEMPT, running.pid)
+            self._preempt(running)
+
+    def _handle_cpu_burst_end(self, running: RuntimeProcess) -> None:
+        if self._has_next_cpu_burst(running):
+            self._block_for_io(running)
+        else:
+            self._terminate(running)
+
+    @staticmethod
+    def _has_next_cpu_burst(running: RuntimeProcess) -> bool:
+        # Bursts alternate as [CPU, IO, CPU, IO, ...]; the next CPU burst lives
+        # at burst_index + 2 (with the IO that precedes it at + 1).
+        return running.burst_index + 2 < len(running.process.bursts)
+
+    def _block_for_io(self, running: RuntimeProcess) -> None:
+        bursts = running.process.bursts
+        next_io_idx = running.burst_index + 1
+        next_cpu_idx = running.burst_index + 2
+        running.io_remaining = bursts[next_io_idx]
+        running.cpu_remaining = bursts[next_cpu_idx]
+        running.burst_index = next_cpu_idx
+        self.blocked.append(running)
+        self.running = None
+        self._emit(Event.CPU_BURST_END, running.pid)
+
+    def _terminate(self, running: RuntimeProcess) -> None:
+        running.finish = self.current_time
+        self.running = None
+        self._emit(Event.TERMINATE, running.pid)
+
+    def _preempt(self, running: RuntimeProcess) -> None:
+        self.ready.append(running)
+        self.running = None
+        self._emit(Event.PREEMPT, running.pid)
 
     def _dispatch(self) -> None:
         next_proc = self.scheduler.pick_next(self.ready, self.current_time)
@@ -132,7 +142,6 @@ class Simulator:
         self._emit(Event.DISPATCH, next_proc.pid)
 
     def _apply_context_switch_cost(self, next_pid: str) -> None:
-        # if the context switch cost is 0 or the last process is the same as the next process, do not apply the context switch cost
         if self.cs_cost <= 0 or self.last_pid is None or self.last_pid == next_pid:
             return
 

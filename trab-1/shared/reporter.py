@@ -9,7 +9,7 @@ from models.simulation.simulation_result import SimulationResult
 
 
 def aggregate_reports(runs: list[list[MetricsReport]]) -> list[MetricsReport]:
-    """Média das métricas agregadas por algoritmo em várias execuções (mesma ordem de algoritmos)."""
+    """Average aggregated metrics per algorithm across multiple runs (same algorithm order)."""
     if not runs:
         return []
     n_algo = len(runs[0])

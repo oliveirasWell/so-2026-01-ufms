@@ -23,6 +23,4 @@ class RoundRobin(Scheduler):
         ready: list[RuntimeProcess],
         now: int,
     ) -> bool:
-        # now - last time the process was dispatched >= quantum
-        # if the process has been dispatched for longer than the quantum, preempt it
         return now - self._dispatched_at >= self._quantum

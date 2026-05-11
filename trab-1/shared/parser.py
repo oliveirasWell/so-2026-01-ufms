@@ -6,8 +6,8 @@ from models.process.workload import Workload
 
 
 def _hook(d):
-    # O json chama este hook para *cada* objeto {...} do arquivo, de dentro para fora.
-    # Objetos de processo trazem "pid"; o objeto raiz traz "quantum", "processes", etc., mas não "pid".
+    # json calls this hook for *every* {...} object in the file, inside-out.
+    # Process objects carry "pid"; the root object carries "quantum", "processes", etc., but no "pid".
     if "pid" in d:
         return Process(
             d["pid"],
