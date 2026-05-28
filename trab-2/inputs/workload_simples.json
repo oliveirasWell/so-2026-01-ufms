@@ -1,0 +1,12 @@
+{
+  "memoria_total": 1000,
+  "eventos": [
+    {"tipo": "ALOC",   "pid": "P1", "tamanho": 200},
+    {"tipo": "ALOC",   "pid": "P2", "tamanho": 300},
+    {"tipo": "ALOC",   "pid": "P3", "tamanho": 100},
+    {"tipo": "LIBERA", "pid": "P2"},
+    {"tipo": "ALOC",   "pid": "P4", "tamanho": 250},
+    {"tipo": "LIBERA", "pid": "P1"},
+    {"tipo": "ALOC",   "pid": "P5", "tamanho": 150}
+  ]
+}
