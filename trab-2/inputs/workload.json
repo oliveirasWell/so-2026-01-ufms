@@ -1,0 +1,20 @@
+{
+  "memoria_total": 1200,
+  "eventos": [
+    {"tipo": "ALOC",   "pid": "P1", "tamanho": 250},
+    {"tipo": "ALOC",   "pid": "P2", "tamanho": 150},
+    {"tipo": "ALOC",   "pid": "P3", "tamanho": 400},
+    {"tipo": "ALOC",   "pid": "P4", "tamanho": 100},
+    {"tipo": "ALOC",   "pid": "P5", "tamanho": 200},
+    {"tipo": "LIBERA", "pid": "P2"},
+    {"tipo": "LIBERA", "pid": "P4"},
+    {"tipo": "ALOC",   "pid": "P6", "tamanho": 80},
+    {"tipo": "ALOC",   "pid": "P7", "tamanho": 120},
+    {"tipo": "LIBERA", "pid": "P3"},
+    {"tipo": "ALOC",   "pid": "P8", "tamanho": 350},
+    {"tipo": "ALOC",   "pid": "P9", "tamanho": 90},
+    {"tipo": "LIBERA", "pid": "P1"},
+    {"tipo": "LIBERA", "pid": "P5"},
+    {"tipo": "ALOC",   "pid": "P10", "tamanho": 500}
+  ]
+}
