@@ -1,0 +1,2 @@
+IDLE_PID = "IDLE"
+CS_PID = "CS"
