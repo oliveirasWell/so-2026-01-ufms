@@ -1,0 +1,12 @@
+from enum import StrEnum
+
+
+class Event(StrEnum):
+    ARRIVAL = "ARRIVAL"
+    DISPATCH = "DISPATCH"
+    PREEMPT = "PREEMPT"
+    CPU_BURST_END = "CPU_BURST_END"
+    IO_DONE = "IO_DONE"
+    CONTEXT_SWITCH = "CONTEXT_SWITCH"
+    TERMINATE = "TERMINATE"
+    IDLE = "IDLE"

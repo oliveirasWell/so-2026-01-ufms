@@ -1,0 +1,9 @@
+{
+  "processes": [
+    {"pid": "P01", "arrival": 0, "priority": 1, "bursts": [8]},
+    {"pid": "P02", "arrival": 2, "priority": 1, "bursts": [4]},
+    {"pid": "P03", "arrival": 2, "priority": 1, "bursts": [3]},
+    {"pid": "P04", "arrival": 12, "priority": 1, "bursts": [5]},
+    {"pid": "P05", "arrival": 17, "priority": 1, "bursts": [3]}
+  ]
+}
