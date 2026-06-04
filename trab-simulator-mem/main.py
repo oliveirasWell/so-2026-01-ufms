@@ -1,69 +1,44 @@
 import sys
 from pathlib import Path
 
-# Permite rodar `python3 main.py` direto da pasta trab-2/ sem PYTHONPATH.
+# Permite rodar `python3 main.py` direto da pasta sem ajustar PYTHONPATH.
 sys.path.insert(0, str(Path(__file__).parent))
 
 from cli import parse_args
-from simulador.parser import parse_input
-from simulador.runner import ResultadoEvento, executar
+from simulador.algoritmos.instantiate_algoritmos import ALL_KEYS
 from simulador.memoria import Memoria
-from simulador.visualizacao import imprimir_estado
-from simulador.relatorio import imprimir_relatorio
-from simulador.algoritmos import first_fit, best_fit, worst_fit
-
-
-ALGORITMOS = {
-    "first-fit": first_fit.escolher,
-    "best-fit": best_fit.escolher,
-    "worst-fit": worst_fit.escolher,
-}
-
-
-def _descrever(resultado: ResultadoEvento) -> str:
-    ev = resultado.evento
-    if resultado.tipo == "ALOCADO":
-        return (
-            f"ALOC  {ev.pid}={ev.tamanho}  → alocado na brecha #{resultado.indice_brecha}"
-        )
-    if resultado.tipo == "LIBERADO":
-        return f"LIBERA {ev.pid}  → liberado"
-    if resultado.tipo == "LIBERADO_INEXISTENTE":
-        return f"LIBERA {ev.pid}  → AVISO: pid inexistente (ignorado)"
-    if resultado.tipo == "FALHA_FRAGMENTACAO_EXTERNA":
-        return (
-            f"ALOC  {ev.pid}={ev.tamanho}  → FALHA: FRAGMENTAÇÃO EXTERNA "
-            f"(soma das brechas comporta, mas nenhuma individualmente)"
-        )
-    if resultado.tipo == "FALHA_SEM_ESPACO":
-        return f"ALOC  {ev.pid}={ev.tamanho}  → FALHA: sem memória suficiente"
-    return f"{ev}"
+from simulador.parser import parse_input
+from simulador.relatorio import imprimir_comparacao, imprimir_relatorio, resumo_para_snapshot
+from simulador.runner import ResultadoEvento, run_simulation
+from simulador.visualizacao import descrever_resultado, imprimir_estado
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
+    args = parse_args(argv, ALL_KEYS)
     workload = parse_input(args.input)
-    escolher = ALGORITMOS[args.algoritmo]
-
-    print(f"# Algoritmo: {args.algoritmo}")
-    print(f"# Input: {args.input}")
-    print(f"# Memória total: {workload.memoria_total}")
-    print(f"# Eventos: {len(workload.eventos)}")
-    print()
 
     n = 0
 
     def callback(resultado: ResultadoEvento, memoria: Memoria) -> None:
         nonlocal n
         n += 1
-        if args.quiet:
-            return
-        print(f"Evento #{n}: {_descrever(resultado)}")
+        print(f"Evento #{n}: {descrever_resultado(resultado)}")
         imprimir_estado(memoria)
         print()
 
-    memoria, stats = executar(workload, escolher, on_evento=callback)
-    imprimir_relatorio(memoria, stats)
+    # Estado evento-a-evento só faz sentido para um único algoritmo.
+    verbose = not args.quiet and args.algoritmo is not None
+    resultados = run_simulation(workload, args.algoritmo, on_evento=callback if verbose else None)
+
+    for resultado in resultados:
+        print(f"=== {resultado.algoritmo} ===")
+        imprimir_relatorio(resultado.memoria, resultado.stats)
+        print()
+
+    if len(resultados) > 1:
+        imprimir_comparacao(
+            [(r.algoritmo, resumo_para_snapshot(r.memoria, r.stats)) for r in resultados]
+        )
     return 0
 
 

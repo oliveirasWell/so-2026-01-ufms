@@ -44,12 +44,27 @@ Cada falha é contabilizada separadamente no relatório final.
 > final com utilização e processos rejeitados) está integralmente
 > coberto.
 
+### Setup
+
+O projeto usa **apenas a biblioteca-padrão**, então não há nada para
+instalar — basta o `python3`. Para isolar o ambiente (mesma estratégia do
+`trab-1/`), opcionalmente crie um virtualenv:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+# nenhuma dependência externa para instalar
+```
+
 ## Como rodar
 
 A partir da pasta `trab-2/`:
 
 ```bash
-# rodar um algoritmo no workload default
+# rodar os TRÊS algoritmos e comparar (default — sem --algoritmo)
+python3 main.py --input inputs/workload.json
+
+# rodar um único algoritmo (mostra o estado após cada evento)
 python3 main.py --algoritmo first-fit
 
 # escolher outro arquivo de entrada
@@ -58,7 +73,7 @@ python3 main.py --algoritmo best-fit --input inputs/workload_fragmentacao.json
 # suprimir estado por evento (mostra só o relatório)
 python3 main.py --algoritmo worst-fit --quiet
 
-# rodar a regressão (3 algoritmos × 2 workloads + invariante de coalescing)
+# regressão por snapshot (3 algoritmos × 2 workloads + invariante de coalescing)
 python3 test_simulator.py
 ```
 
@@ -96,25 +111,50 @@ relatório.
 | `workload_fragmentacao.json` | reproduz fragmentação externa canônica + falta de memória + LIBERA de pid inexistente |
 | `workload_simples.json` | exemplo mínimo, sem falhas, útil para sanity check |
 
+## Organização (harness)
+
+O código segue o mesmo padrão de pipeline do `trab-1/`. Um **registry**
+mapeia o nome do algoritmo para a sua função `escolher`
+(`simulador/algoritmos/instantiate_algoritmos.py`), e
+`run_simulation(workload, algo=None)` (em `simulador/runner.py`) roda um
+algoritmo — ou os três, quando `--algoritmo` é omitido — devolvendo um
+`ResultadoSimulacao` por algoritmo. Com mais de um algoritmo, o `main`
+imprime, além do relatório de cada um, uma **tabela comparativa** e o
+vencedor por métrica (`simulador/avaliacao.py`).
+
+A pasta `snapshots/` guarda o resultado esperado
+(`relatorio.resumo_para_snapshot`) de cada algoritmo para os workloads de
+exemplo. O `test_simulator.py` recarrega esses JSONs e compara com a
+execução atual — é a regressão que detecta mudança acidental de
+comportamento. Ao mudar a semântica de propósito, regenere com
+`python3 -c "import test_simulator as t; t.gerar_snapshots()"` e confira o
+diff antes de commitar.
+
 ## Estrutura
 
 ```
 trab-2/
 ├── README.md
-├── main.py                       # entry point
-├── cli.py                        # argparse
-├── test_simulator.py             # regressão
+├── .gitignore
+├── main.py                       # entry fino: parse → run_simulation → print
+├── cli.py                        # argparse (--algoritmo opcional, --input, --quiet)
+├── test_simulator.py             # regressão por snapshot + coalescing
 ├── inputs/
 │   ├── workload.json
 │   ├── workload_fragmentacao.json
 │   └── workload_simples.json
+├── snapshots/                    # resultados fixados p/ a regressão
+│   ├── workload_simples_stats.json
+│   └── workload_fragmentacao_stats.json
 └── simulador/
     ├── parser.py                 # leitura do JSON
     ├── memoria.py                # Bloco + Memoria (com coalescing)
-    ├── runner.py                 # orquestra eventos, classifica falhas
-    ├── visualizacao.py           # impressão do estado após cada evento
-    ├── relatorio.py              # relatório final
+    ├── runner.py                 # executar (1 evento) + run_simulation (1..N algoritmos)
+    ├── avaliacao.py              # pick_winners (vencedor por métrica)
+    ├── visualizacao.py           # estado por evento + descrever_resultado
+    ├── relatorio.py              # relatório final + tabela comparativa + resumo p/ snapshot
     └── algoritmos/
+        ├── instantiate_algoritmos.py   # registry: nome → escolher
         ├── first_fit.py
         ├── best_fit.py
         └── worst_fit.py

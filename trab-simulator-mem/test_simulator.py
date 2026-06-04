@@ -1,80 +1,58 @@
-"""Teste de regressao: roda os 3 algoritmos sobre os workloads de exemplo
-e confere que as contagens do relatorio batem com o esperado.
+"""Teste de regressão por snapshot.
 
-Sem dependencias externas — basta `python3 test_simulator.py` a partir
-de `trab-2/`. Encerra com codigo != 0 se algo divergir.
+Para cada workload de exemplo, roda os 3 algoritmos via `run_simulation` e
+compara o resumo (`relatorio.resumo_para_snapshot`) com o snapshot fixado em
+`snapshots/<workload>_stats.json`. Mantém também o invariante de coalescing.
+
+Sem dependências externas: `python3 test_simulator.py` (encerra != 0 se algo
+divergir). Ao mudar a semântica de propósito, regenerar os snapshots com
+`gerar_snapshots()` e conferir o diff antes de commitar.
 """
 
+import json
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
 from simulador.parser import parse_input
-from simulador.runner import executar
-from simulador.algoritmos import first_fit, best_fit, worst_fit
+from simulador.relatorio import resumo_para_snapshot
+from simulador.runner import run_simulation
 
 
 _ROOT = Path(__file__).resolve().parent
-ALGORITMOS = {
-    "first-fit": first_fit.escolher,
-    "best-fit": best_fit.escolher,
-    "worst-fit": worst_fit.escolher,
-}
+
+# (nome legível, input relativo, snapshot relativo)
+_CASOS = (
+    ("workload_simples", "inputs/workload_simples.json", "snapshots/workload_simples_stats.json"),
+    ("workload_fragmentacao", "inputs/workload_fragmentacao.json", "snapshots/workload_fragmentacao_stats.json"),
+)
 
 
-def _resumo(stats) -> dict:
+def _resumos(input_rel: str) -> dict[str, dict]:
+    workload = parse_input(_ROOT / input_rel)
     return {
-        "alocados": stats.alocados,
-        "liberados": stats.liberados,
-        "liberados_inexistentes": stats.liberados_inexistentes,
-        "falhas_fragmentacao_externa": stats.falhas_fragmentacao_externa,
-        "falhas_sem_espaco": stats.falhas_sem_espaco,
+        r.algoritmo: resumo_para_snapshot(r.memoria, r.stats)
+        for r in run_simulation(workload)
     }
 
 
-def _assert_eq(esperado: dict, obtido: dict, contexto: str) -> None:
-    if esperado != obtido:
-        raise AssertionError(
-            f"\n[{contexto}] divergiu:\n  esperado = {esperado}\n  obtido   = {obtido}"
-        )
-
-
-def _testa_workload_simples() -> None:
-    # 7 eventos, 5 ALOC, 2 LIBERA — todos cabem em qualquer estratégia.
-    workload = parse_input(_ROOT / "inputs" / "workload_simples.json")
-    esperado = {
-        "alocados": 5,
-        "liberados": 2,
-        "liberados_inexistentes": 0,
-        "falhas_fragmentacao_externa": 0,
-        "falhas_sem_espaco": 0,
-    }
-    for nome, escolher in ALGORITMOS.items():
-        _, stats = executar(workload, escolher)
-        _assert_eq(esperado, _resumo(stats), f"workload_simples / {nome}")
-
-
-def _testa_workload_fragmentacao() -> None:
-    # 10 eventos. Independente do algoritmo, a configuração final é:
-    # 5 alocados, 2 liberados, 1 LIBERA pid inexistente, 1 falha
-    # por fragmentação externa, 1 falha por falta de memória.
-    workload = parse_input(_ROOT / "inputs" / "workload_fragmentacao.json")
-    esperado = {
-        "alocados": 5,
-        "liberados": 2,
-        "liberados_inexistentes": 1,
-        "falhas_fragmentacao_externa": 1,
-        "falhas_sem_espaco": 1,
-    }
-    for nome, escolher in ALGORITMOS.items():
-        _, stats = executar(workload, escolher)
-        _assert_eq(esperado, _resumo(stats), f"workload_fragmentacao / {nome}")
+def _testa_snapshots() -> None:
+    for nome, input_rel, snap_rel in _CASOS:
+        esperado = json.loads((_ROOT / snap_rel).read_text(encoding="utf-8"))
+        obtido = _resumos(input_rel)
+        for algo, esperado_algo in esperado.items():
+            if obtido.get(algo) != esperado_algo:
+                raise AssertionError(
+                    f"\n[{nome} / {algo}] divergiu:\n"
+                    f"  esperado = {esperado_algo}\n"
+                    f"  obtido   = {obtido.get(algo)}"
+                )
 
 
 def _testa_coalescing() -> None:
-    # Verifica que liberar todos os processos faz a memoria voltar a um
-    # unico bloco livre do tamanho original (invariante de coalescing).
+    # Liberar todos os processos deve voltar a memória a um único bloco livre
+    # do tamanho original (invariante de coalescing).
     from simulador.memoria import Memoria
 
     m = Memoria(1000)
@@ -90,11 +68,25 @@ def _testa_coalescing() -> None:
         )
 
 
+def gerar_snapshots() -> None:
+    """Reescreve snapshots/*.json a partir do estado atual do código.
+
+    Uso (dev): `python3 -c "import test_simulator as t; t.gerar_snapshots()"`.
+    Rodar só ao mudar a semântica de propósito; depois conferir o diff.
+    """
+    for _, input_rel, snap_rel in _CASOS:
+        resumos = _resumos(input_rel)
+        (_ROOT / snap_rel).write_text(
+            json.dumps(resumos, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+        print(f"escrito {snap_rel}")
+
+
 def main() -> int:
-    _testa_workload_simples()
-    _testa_workload_fragmentacao()
+    _testa_snapshots()
     _testa_coalescing()
-    print("OK — 3 algoritmos x 2 workloads + coalescing")
+    print("OK — snapshots (3 algoritmos × 2 workloads) + coalescing")
     return 0
 
 

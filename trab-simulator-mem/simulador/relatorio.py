@@ -9,8 +9,19 @@ de falha, maior brecha residual e número de fusões realizadas.
 
 from __future__ import annotations
 
+from simulador.avaliacao import pick_winners
 from simulador.memoria import Memoria
 from simulador.runner import Estatisticas
+
+
+_COLUNAS_COMPARACAO = (
+    "alocados",
+    "falhas_fragmentacao_externa",
+    "falhas_sem_espaco",
+    "fusoes",
+    "utilizacao_final_pct",
+    "maior_brecha_final",
+)
 
 
 def imprimir_relatorio(memoria: Memoria, stats: Estatisticas) -> None:
@@ -43,3 +54,40 @@ def imprimir_relatorio(memoria: Memoria, stats: Estatisticas) -> None:
     print(f"  Rejeitados por falta de mem . {stats.falhas_sem_espaco}")
     print(f"  Rejeitados (total) .......... {rejeitados_total}")
     print("=========================================================")
+
+
+def resumo_para_snapshot(memoria: Memoria, stats: Estatisticas) -> dict:
+    """Resumo estável e JSON-serializável de uma simulação.
+
+    Base tanto dos snapshots de regressão quanto da tabela comparativa.
+    `utilizacao_final_pct` é arredondado a 2 casas para o snapshot ser estável.
+    """
+    total = memoria.tamanho_total
+    return {
+        "alocados": stats.alocados,
+        "liberados": stats.liberados,
+        "liberados_inexistentes": stats.liberados_inexistentes,
+        "falhas_fragmentacao_externa": stats.falhas_fragmentacao_externa,
+        "falhas_sem_espaco": stats.falhas_sem_espaco,
+        "fusoes": stats.fusoes,
+        "utilizacao_final_pct": round(memoria.ocupacao() / total * 100, 2),
+        "maior_brecha_final": memoria.maior_brecha(),
+        "soma_brechas_final": memoria.soma_brechas(),
+    }
+
+
+def imprimir_comparacao(relatorios: list[tuple[str, dict]]) -> None:
+    """Tabela TSV comparando algoritmos + vencedor por métrica.
+
+    Espelha `trab-1/shared/reporter.print_comparison`. Recebe
+    `[(nome, resumo), ...]`, onde resumo é a saída de `resumo_para_snapshot`.
+    """
+    print("Comparação")
+    print("\t".join(("algoritmo",) + _COLUNAS_COMPARACAO))
+    for nome, resumo in relatorios:
+        print("\t".join([nome] + [str(resumo[c]) for c in _COLUNAS_COMPARACAO]))
+
+    print()
+    print("Vencedor por métrica (menos falhas/rejeições e mais utilização é melhor)")
+    for metrica, nome in pick_winners(dict(relatorios)).items():
+        print(f"  {metrica}: {nome}")

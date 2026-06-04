@@ -105,3 +105,34 @@ def executar(
 
     stats.fusoes = memoria.fusoes
     return memoria, stats
+
+
+@dataclass(frozen=True)
+class ResultadoSimulacao:
+    algoritmo: str
+    memoria: Memoria
+    stats: Estatisticas
+
+
+def run_simulation(
+    workload: Workload,
+    algo: str | None = None,
+    *,
+    on_evento: Callable[[ResultadoEvento, Memoria], None] | None = None,
+) -> list[ResultadoSimulacao]:
+    """Roda um algoritmo (ou os três, se `algo is None`) sobre o workload.
+
+    Espelha `trab-1/shared/runner.run_simulation`: para cada algoritmo do
+    registry, chama `executar` e coleta `(memória final, stats)` num
+    `ResultadoSimulacao`. `on_evento` é repassado a `executar` — útil só no
+    modo de um algoritmo, em que a saída evento-a-evento faz sentido.
+    """
+    # Import tardio: o registry depende deste módulo (tipo AlgoritmoEscolher),
+    # então importá-lo aqui evita um ciclo de import no carregamento.
+    from simulador.algoritmos.instantiate_algoritmos import instantiate_algoritmos
+
+    resultados: list[ResultadoSimulacao] = []
+    for nome, escolher in instantiate_algoritmos(algo):
+        memoria, stats = executar(workload, escolher, on_evento=on_evento)
+        resultados.append(ResultadoSimulacao(algoritmo=nome, memoria=memoria, stats=stats))
+    return resultados

@@ -11,6 +11,28 @@ Cada chamada a `imprimir_estado` mostra três visões do mesmo instante:
 from __future__ import annotations
 
 from simulador.memoria import Memoria
+from simulador.runner import ResultadoEvento
+
+
+def descrever_resultado(resultado: ResultadoEvento) -> str:
+    """Linha de uma frase resumindo o que aconteceu num evento."""
+    ev = resultado.evento
+    if resultado.tipo == "ALOCADO":
+        return (
+            f"ALOC  {ev.pid}={ev.tamanho}  → alocado na brecha #{resultado.indice_brecha}"
+        )
+    if resultado.tipo == "LIBERADO":
+        return f"LIBERA {ev.pid}  → liberado"
+    if resultado.tipo == "LIBERADO_INEXISTENTE":
+        return f"LIBERA {ev.pid}  → AVISO: pid inexistente (ignorado)"
+    if resultado.tipo == "FALHA_FRAGMENTACAO_EXTERNA":
+        return (
+            f"ALOC  {ev.pid}={ev.tamanho}  → FALHA: FRAGMENTAÇÃO EXTERNA "
+            f"(soma das brechas comporta, mas nenhuma individualmente)"
+        )
+    if resultado.tipo == "FALHA_SEM_ESPACO":
+        return f"ALOC  {ev.pid}={ev.tamanho}  → FALHA: sem memória suficiente"
+    return f"{ev}"
 
 
 def imprimir_estado(memoria: Memoria, largura_barra: int = 60) -> None:

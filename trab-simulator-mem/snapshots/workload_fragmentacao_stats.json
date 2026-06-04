@@ -1,0 +1,35 @@
+{
+  "first-fit": {
+    "alocados": 5,
+    "liberados": 2,
+    "liberados_inexistentes": 1,
+    "falhas_fragmentacao_externa": 1,
+    "falhas_sem_espaco": 1,
+    "fusoes": 0,
+    "utilizacao_final_pct": 38.33,
+    "maior_brecha_final": 150,
+    "soma_brechas_final": 370
+  },
+  "best-fit": {
+    "alocados": 5,
+    "liberados": 2,
+    "liberados_inexistentes": 1,
+    "falhas_fragmentacao_externa": 1,
+    "falhas_sem_espaco": 1,
+    "fusoes": 0,
+    "utilizacao_final_pct": 38.33,
+    "maior_brecha_final": 200,
+    "soma_brechas_final": 370
+  },
+  "worst-fit": {
+    "alocados": 5,
+    "liberados": 2,
+    "liberados_inexistentes": 1,
+    "falhas_fragmentacao_externa": 1,
+    "falhas_sem_espaco": 1,
+    "fusoes": 0,
+    "utilizacao_final_pct": 38.33,
+    "maior_brecha_final": 150,
+    "soma_brechas_final": 370
+  }
+}
