@@ -120,15 +120,8 @@ def run_simulation(
     *,
     on_evento: Callable[[ResultadoEvento, Memoria], None] | None = None,
 ) -> list[ResultadoSimulacao]:
-    """Roda um algoritmo (ou os três, se `algo is None`) sobre o workload.
-
-    Espelha `trab-1/shared/runner.run_simulation`: para cada algoritmo do
-    registry, chama `executar` e coleta `(memória final, stats)` num
-    `ResultadoSimulacao`. `on_evento` é repassado a `executar` — útil só no
-    modo de um algoritmo, em que a saída evento-a-evento faz sentido.
-    """
-    # Import tardio: o registry depende deste módulo (tipo AlgoritmoEscolher),
-    # então importá-lo aqui evita um ciclo de import no carregamento.
+    """`algo=None` roda os três; senão, só o solicitado."""
+    # import local evita ciclo (o registry referencia este módulo)
     from simulador.algoritmos.instantiate_algoritmos import instantiate_algoritmos
 
     resultados: list[ResultadoSimulacao] = []

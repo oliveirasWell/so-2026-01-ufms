@@ -57,11 +57,7 @@ def imprimir_relatorio(memoria: Memoria, stats: Estatisticas) -> None:
 
 
 def resumo_para_snapshot(memoria: Memoria, stats: Estatisticas) -> dict:
-    """Resumo estável e JSON-serializável de uma simulação.
-
-    Base tanto dos snapshots de regressão quanto da tabela comparativa.
-    `utilizacao_final_pct` é arredondado a 2 casas para o snapshot ser estável.
-    """
+    """Resumo JSON-serializável (base dos snapshots e da comparação)."""
     total = memoria.tamanho_total
     return {
         "alocados": stats.alocados,
@@ -77,11 +73,7 @@ def resumo_para_snapshot(memoria: Memoria, stats: Estatisticas) -> dict:
 
 
 def imprimir_comparacao(relatorios: list[tuple[str, dict]]) -> None:
-    """Tabela TSV comparando algoritmos + vencedor por métrica.
-
-    Espelha `trab-1/shared/reporter.print_comparison`. Recebe
-    `[(nome, resumo), ...]`, onde resumo é a saída de `resumo_para_snapshot`.
-    """
+    """Tabela TSV + vencedor por métrica."""
     print("Comparação")
     print("\t".join(("algoritmo",) + _COLUNAS_COMPARACAO))
     for nome, resumo in relatorios:

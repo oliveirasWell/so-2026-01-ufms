@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-# Permite rodar `python3 main.py` direto da pasta sem ajustar PYTHONPATH.
+# roda direto da pasta sem mexer no PYTHONPATH
 sys.path.insert(0, str(Path(__file__).parent))
 
 from cli import parse_args
@@ -26,7 +26,6 @@ def main(argv: list[str] | None = None) -> int:
         imprimir_estado(memoria)
         print()
 
-    # Estado evento-a-evento só faz sentido para um único algoritmo.
     verbose = not args.quiet and args.algoritmo is not None
     resultados = run_simulation(workload, args.algoritmo, on_evento=callback if verbose else None)
 

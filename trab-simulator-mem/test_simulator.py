@@ -1,12 +1,6 @@
-"""Teste de regressão por snapshot.
+"""Regressão por snapshot: compara `run_simulation` com `snapshots/*.json`.
 
-Para cada workload de exemplo, roda os 3 algoritmos via `run_simulation` e
-compara o resumo (`relatorio.resumo_para_snapshot`) com o snapshot fixado em
-`snapshots/<workload>_stats.json`. Mantém também o invariante de coalescing.
-
-Sem dependências externas: `python3 test_simulator.py` (encerra != 0 se algo
-divergir). Ao mudar a semântica de propósito, regenerar os snapshots com
-`gerar_snapshots()` e conferir o diff antes de commitar.
+Regenerar com `gerar_snapshots()` ao mudar a semântica de propósito.
 """
 
 import json
@@ -22,7 +16,6 @@ from simulador.runner import run_simulation
 
 _ROOT = Path(__file__).resolve().parent
 
-# (nome legível, input relativo, snapshot relativo)
 _CASOS = (
     ("workload_simples", "inputs/workload_simples.json", "snapshots/workload_simples_stats.json"),
     ("workload_fragmentacao", "inputs/workload_fragmentacao.json", "snapshots/workload_fragmentacao_stats.json"),
@@ -51,8 +44,7 @@ def _testa_snapshots() -> None:
 
 
 def _testa_coalescing() -> None:
-    # Liberar todos os processos deve voltar a memória a um único bloco livre
-    # do tamanho original (invariante de coalescing).
+    # liberar tudo deve voltar a um único bloco livre do tamanho original
     from simulador.memoria import Memoria
 
     m = Memoria(1000)
@@ -69,11 +61,7 @@ def _testa_coalescing() -> None:
 
 
 def gerar_snapshots() -> None:
-    """Reescreve snapshots/*.json a partir do estado atual do código.
-
-    Uso (dev): `python3 -c "import test_simulator as t; t.gerar_snapshots()"`.
-    Rodar só ao mudar a semântica de propósito; depois conferir o diff.
-    """
+    """Dev: `python3 -c "import test_simulator as t; t.gerar_snapshots()"`."""
     for _, input_rel, snap_rel in _CASOS:
         resumos = _resumos(input_rel)
         (_ROOT / snap_rel).write_text(

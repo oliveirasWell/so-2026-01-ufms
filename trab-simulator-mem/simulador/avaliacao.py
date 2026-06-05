@@ -1,12 +1,6 @@
-"""Escolha do "vencedor" por métrica entre os algoritmos.
+"""Vencedor por métrica: menos falhas/rejeições e mais utilização.
 
-Espelha `trab-1/shared/evaluation.pick_winners`, adaptado às métricas de
-alocação de memória. Recebe os resumos (saída de
-`relatorio.resumo_para_snapshot`) de cada algoritmo e devolve, por métrica,
-qual algoritmo se saiu melhor.
-
-Para falhas e rejeições, MENOR é melhor; para utilização final, MAIOR é
-melhor. Empates: vence o primeiro algoritmo na ordem de inserção.
+Empate: vence o primeiro algoritmo na ordem de inserção.
 """
 
 from __future__ import annotations
@@ -26,11 +20,7 @@ def _valor(resumo: dict, metrica: str) -> float:
 
 
 def pick_winners(relatorios: dict[str, dict]) -> dict[str, str]:
-    """Mapeia métrica -> nome do algoritmo vencedor.
-
-    `relatorios` é `{nome_algoritmo: resumo}` (resumo = resumo_para_snapshot).
-    `rejeitados_total` é derivado da soma das duas categorias de falha.
-    """
+    """`rejeitados_total` é derivado da soma das duas categorias de falha."""
     if not relatorios:
         return {}
     itens = list(relatorios.items())

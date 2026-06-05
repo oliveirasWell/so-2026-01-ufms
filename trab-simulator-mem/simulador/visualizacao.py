@@ -15,7 +15,6 @@ from simulador.runner import ResultadoEvento
 
 
 def descrever_resultado(resultado: ResultadoEvento) -> str:
-    """Linha de uma frase resumindo o que aconteceu num evento."""
     ev = resultado.evento
     if resultado.tipo == "ALOCADO":
         return (
