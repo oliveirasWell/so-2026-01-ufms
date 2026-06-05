@@ -1,16 +1,16 @@
 import sys
 from pathlib import Path
 
-# roda direto da pasta sem mexer no PYTHONPATH
+# run straight from the folder without touching PYTHONPATH
 sys.path.insert(0, str(Path(__file__).parent))
 
 from cli import parse_args
-from simulador.algoritmos.instantiate_algoritmos import ALL_KEYS
-from simulador.memoria import Memoria
-from simulador.parser import parse_input
-from simulador.relatorio import imprimir_comparacao, imprimir_relatorio, resumo_para_snapshot
-from simulador.runner import ResultadoEvento, run_simulation
-from simulador.visualizacao import descrever_resultado, imprimir_estado
+from simulator.algorithms.instantiate_algorithms import ALL_KEYS
+from simulator.memory import Memory
+from simulator.parser import parse_input
+from simulator.report import print_comparison, print_report, snapshot_summary
+from simulator.runner import EventResult, run_simulation
+from simulator.visualization import describe_result, print_state
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -19,24 +19,24 @@ def main(argv: list[str] | None = None) -> int:
 
     n = 0
 
-    def callback(resultado: ResultadoEvento, memoria: Memoria) -> None:
+    def callback(result: EventResult, memory: Memory) -> None:
         nonlocal n
         n += 1
-        print(f"Evento #{n}: {descrever_resultado(resultado)}")
-        imprimir_estado(memoria)
+        print(f"Evento #{n}: {describe_result(result)}")
+        print_state(memory)
         print()
 
-    verbose = not args.quiet and args.algoritmo is not None
-    resultados = run_simulation(workload, args.algoritmo, on_evento=callback if verbose else None)
+    verbose = not args.quiet and args.algorithm is not None
+    results = run_simulation(workload, args.algorithm, on_event=callback if verbose else None)
 
-    for resultado in resultados:
-        print(f"=== {resultado.algoritmo} ===")
-        imprimir_relatorio(resultado.memoria, resultado.stats)
+    for result in results:
+        print(f"=== {result.algorithm} ===")
+        print_report(result.memory, result.stats)
         print()
 
-    if len(resultados) > 1:
-        imprimir_comparacao(
-            [(r.algoritmo, resumo_para_snapshot(r.memoria, r.stats)) for r in resultados]
+    if len(results) > 1:
+        print_comparison(
+            [(r.algorithm, snapshot_summary(r.memory, r.stats)) for r in results]
         )
     return 0
 

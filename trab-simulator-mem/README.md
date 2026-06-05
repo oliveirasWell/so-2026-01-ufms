@@ -60,17 +60,17 @@ source .venv/bin/activate
 A partir da pasta `trab-2/`:
 
 ```bash
-# rodar os TRÊS algoritmos e comparar (default — sem --algoritmo)
+# rodar os TRÊS algoritmos e comparar (default — sem --algorithm)
 python3 main.py --input inputs/workload.json
 
 # rodar um único algoritmo (mostra o estado após cada evento)
-python3 main.py --algoritmo first-fit
+python3 main.py --algorithm first-fit
 
 # escolher outro arquivo de entrada
-python3 main.py --algoritmo best-fit --input inputs/workload_fragmentacao.json
+python3 main.py --algorithm best-fit --input inputs/workload_fragmentacao.json
 
 # suprimir estado por evento (mostra só o relatório)
-python3 main.py --algoritmo worst-fit --quiet
+python3 main.py --algorithm worst-fit --quiet
 
 # regressão por snapshot (3 algoritmos × 2 workloads + invariante de coalescing)
 python3 test_simulator.py
@@ -99,7 +99,7 @@ do trab-1):
   em `LIBERA`.
 
 `LIBERA` de um `pid` que não está alocado é tratado como aviso (não
-trava a simulação) e contabilizado como `liberados_inexistentes` no
+trava a simulação) e contabilizado como `freed_missing` no
 relatório.
 
 ## Workloads em `inputs/`
@@ -117,7 +117,7 @@ workloads de exemplo; `test_simulator.py` compara a execução atual com eles.
 Para regerar após mudar a semântica:
 
 ```bash
-python3 -c "import test_simulator as t; t.gerar_snapshots()"
+python3 -c "import test_simulator as t; t.generate_snapshots()"
 ```
 
 ## Estrutura
@@ -127,7 +127,7 @@ trab-2/
 ├── README.md
 ├── .gitignore
 ├── main.py                       # entry fino: parse → run_simulation → print
-├── cli.py                        # argparse (--algoritmo opcional, --input, --quiet)
+├── cli.py                        # argparse (--algorithm opcional, --input, --quiet)
 ├── test_simulator.py             # regressão por snapshot + coalescing
 ├── inputs/
 │   ├── workload.json
@@ -136,15 +136,15 @@ trab-2/
 ├── snapshots/                    # resultados fixados p/ a regressão
 │   ├── workload_simples_stats.json
 │   └── workload_fragmentacao_stats.json
-└── simulador/
+└── simulator/
     ├── parser.py                 # leitura do JSON
-    ├── memoria.py                # Bloco + Memoria (com coalescing)
-    ├── runner.py                 # executar (1 evento) + run_simulation (1..N algoritmos)
-    ├── avaliacao.py              # pick_winners (vencedor por métrica)
-    ├── visualizacao.py           # estado por evento + descrever_resultado
-    ├── relatorio.py              # relatório final + tabela comparativa + resumo p/ snapshot
-    └── algoritmos/
-        ├── instantiate_algoritmos.py   # registry: nome → escolher
+    ├── memory.py                 # Block + Memory (com coalescing)
+    ├── runner.py                 # run (1 evento) + run_simulation (1..N algoritmos)
+    ├── evaluation.py             # pick_winners (vencedor por métrica)
+    ├── visualization.py          # estado por evento + describe_result
+    ├── report.py                 # relatório final + tabela comparativa + snapshot_summary
+    └── algorithms/
+        ├── instantiate_algorithms.py   # registry: nome → choose
         ├── first_fit.py
         ├── best_fit.py
         └── worst_fit.py
