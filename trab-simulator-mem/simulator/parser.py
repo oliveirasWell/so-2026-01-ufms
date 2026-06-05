@@ -1,7 +1,6 @@
 """Reads the JSON input file.
 
-Expected format (the JSON keys are the user-provided input contract and
-stay in Portuguese):
+Expected format:
 
     {
       "memoria_total": 1000,

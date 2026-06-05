@@ -5,9 +5,6 @@ processes that could not be allocated for lack of contiguous space". We
 report those two plus a few extra statistics useful to check the
 algorithms' behavior: final utilization, per-category failure counts,
 largest residual gap and number of merges performed.
-
-Code identifiers are English; the strings printed to the user stay in
-Portuguese.
 """
 
 from __future__ import annotations

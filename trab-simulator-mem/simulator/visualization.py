@@ -6,8 +6,6 @@ Each call to `print_state` shows three views of the same instant:
 2. Gaps — one line per free space.
 3. Compact ASCII bar — proportional layout of the whole memory in a
    single line, handy to spot fragmentation at a glance.
-
-Code identifiers are English; the printed strings stay in Portuguese.
 """
 
 from __future__ import annotations
