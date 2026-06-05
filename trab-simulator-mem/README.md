@@ -34,7 +34,8 @@ Cada falha é contabilizada separadamente no relatório final.
 
 ## Requisitos
 
-- Python 3.10+ (apenas biblioteca-padrão, sem dependências)
+- Python 3.10+ — o simulador e a regressão usam **apenas a biblioteca-padrão**.
+- Os notebooks (`notebook.ipynb`, `inputs.ipynb`) usam `matplotlib` e `notebook` (mesmas libs do trab-1).
 
 > ⚠️ **Observação importante sobre a linguagem.** O enunciado deste
 > trabalho permite apenas C, C++ ou Java. Esta implementação foi feita
@@ -46,13 +47,13 @@ Cada falha é contabilizada separadamente no relatório final.
 
 ### Setup
 
-O projeto usa **apenas a biblioteca-padrão**, então não há nada para
-instalar — basta o `python3`. Opcionalmente, isole o ambiente num virtualenv:
+O simulador e a regressão (`test_simulator.py`) usam só a biblioteca-padrão.
+Os notebooks precisam de `matplotlib` e `notebook`:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-# nenhuma dependência externa para instalar
+pip install notebook matplotlib   # só para os notebooks
 ```
 
 ## Como rodar
@@ -120,6 +121,20 @@ Para regerar após mudar a semântica:
 python3 -c "import test_simulator as t; t.generate_snapshots()"
 ```
 
+## Notebooks
+
+Análise visual com `matplotlib` (rodar após o Setup acima):
+
+```bash
+jupyter notebook notebook.ipynb   # ou inputs.ipynb
+```
+
+- `notebook.ipynb` — compara First/Best/Worst Fit em cada workload: layout final
+  da memória, gráficos de métricas (utilização, maior brecha, rejeições) e a
+  maior brecha por evento no workload de fragmentação.
+- `inputs.ipynb` — explora os workloads de entrada: capacidade, mix de eventos,
+  demanda total de `ALOC` e distribuição dos tamanhos.
+
 ## Estrutura
 
 ```
@@ -129,6 +144,8 @@ trab-2/
 ├── main.py                       # entry fino: parse → run_simulation → print
 ├── cli.py                        # argparse (--algorithm opcional, --input, --quiet)
 ├── test_simulator.py             # regressão por snapshot + coalescing
+├── notebook.ipynb                # análise comparativa (matplotlib)
+├── inputs.ipynb                  # exploração dos workloads (matplotlib)
 ├── inputs/
 │   ├── workload.json
 │   ├── workload_fragmentacao.json
