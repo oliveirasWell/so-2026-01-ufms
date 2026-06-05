@@ -9,7 +9,7 @@ def parse_args(argv: list[str] | None, algo_choices: Iterable[str]) -> argparse.
         "(First Fit, Best Fit, Worst Fit) — UFMS SO 2026."
     )
     parser.add_argument(
-        "--algoritmo",
+        "--algorithm",
         default=None,
         choices=tuple(algo_choices),
         help="Algoritmo de alocação. Omita para rodar os três e comparar.",
