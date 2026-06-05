@@ -44,21 +44,35 @@ Cada falha é contabilizada separadamente no relatório final.
 > final com utilização e processos rejeitados) está integralmente
 > coberto.
 
+### Setup
+
+O projeto usa **apenas a biblioteca-padrão**, então não há nada para
+instalar — basta o `python3`. Opcionalmente, isole o ambiente num virtualenv:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+# nenhuma dependência externa para instalar
+```
+
 ## Como rodar
 
 A partir da pasta `trab-2/`:
 
 ```bash
-# rodar um algoritmo no workload default
-python3 main.py --algoritmo first-fit
+# rodar os TRÊS algoritmos e comparar (default — sem --algorithm)
+python3 main.py --input inputs/workload.json
+
+# rodar um único algoritmo (mostra o estado após cada evento)
+python3 main.py --algorithm first-fit
 
 # escolher outro arquivo de entrada
-python3 main.py --algoritmo best-fit --input inputs/workload_fragmentacao.json
+python3 main.py --algorithm best-fit --input inputs/workload_fragmentacao.json
 
 # suprimir estado por evento (mostra só o relatório)
-python3 main.py --algoritmo worst-fit --quiet
+python3 main.py --algorithm worst-fit --quiet
 
-# rodar a regressão (3 algoritmos × 2 workloads + invariante de coalescing)
+# regressão por snapshot (3 algoritmos × 2 workloads + invariante de coalescing)
 python3 test_simulator.py
 ```
 
@@ -85,7 +99,7 @@ do trab-1):
   em `LIBERA`.
 
 `LIBERA` de um `pid` que não está alocado é tratado como aviso (não
-trava a simulação) e contabilizado como `liberados_inexistentes` no
+trava a simulação) e contabilizado como `freed_missing` no
 relatório.
 
 ## Workloads em `inputs/`
@@ -96,25 +110,41 @@ relatório.
 | `workload_fragmentacao.json` | reproduz fragmentação externa canônica + falta de memória + LIBERA de pid inexistente |
 | `workload_simples.json` | exemplo mínimo, sem falhas, útil para sanity check |
 
+## Regressão (snapshots)
+
+`snapshots/*.json` guarda o resultado esperado de cada algoritmo nos
+workloads de exemplo; `test_simulator.py` compara a execução atual com eles.
+Para regerar após mudar a semântica:
+
+```bash
+python3 -c "import test_simulator as t; t.generate_snapshots()"
+```
+
 ## Estrutura
 
 ```
 trab-2/
 ├── README.md
-├── main.py                       # entry point
-├── cli.py                        # argparse
-├── test_simulator.py             # regressão
+├── .gitignore
+├── main.py                       # entry fino: parse → run_simulation → print
+├── cli.py                        # argparse (--algorithm opcional, --input, --quiet)
+├── test_simulator.py             # regressão por snapshot + coalescing
 ├── inputs/
 │   ├── workload.json
 │   ├── workload_fragmentacao.json
 │   └── workload_simples.json
-└── simulador/
+├── snapshots/                    # resultados fixados p/ a regressão
+│   ├── workload_simples_stats.json
+│   └── workload_fragmentacao_stats.json
+└── simulator/
     ├── parser.py                 # leitura do JSON
-    ├── memoria.py                # Bloco + Memoria (com coalescing)
-    ├── runner.py                 # orquestra eventos, classifica falhas
-    ├── visualizacao.py           # impressão do estado após cada evento
-    ├── relatorio.py              # relatório final
-    └── algoritmos/
+    ├── memory.py                 # Block + Memory (com coalescing)
+    ├── runner.py                 # run (1 evento) + run_simulation (1..N algoritmos)
+    ├── evaluation.py             # pick_winners (vencedor por métrica)
+    ├── visualization.py          # estado por evento + describe_result
+    ├── report.py                 # relatório final + tabela comparativa + snapshot_summary
+    └── algorithms/
+        ├── instantiate_algorithms.py   # registry: nome → choose
         ├── first_fit.py
         ├── best_fit.py
         └── worst_fit.py

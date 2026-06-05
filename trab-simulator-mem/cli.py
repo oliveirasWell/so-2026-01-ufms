@@ -1,17 +1,18 @@
 import argparse
+from collections.abc import Iterable
 from pathlib import Path
 
 
-def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+def parse_args(argv: list[str] | None, algo_choices: Iterable[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Simulador de alocação dinâmica de memória "
         "(First Fit, Best Fit, Worst Fit) — UFMS SO 2026."
     )
     parser.add_argument(
-        "--algoritmo",
-        required=True,
-        choices=("first-fit", "best-fit", "worst-fit"),
-        help="Algoritmo de alocação a usar.",
+        "--algorithm",
+        default=None,
+        choices=tuple(algo_choices),
+        help="Algoritmo de alocação. Omita para rodar os três e comparar.",
     )
     parser.add_argument(
         "--input",
