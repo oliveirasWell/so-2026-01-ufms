@@ -48,13 +48,23 @@ Cada falha é contabilizada separadamente no relatório final.
 ### Setup
 
 O simulador e a regressão (`test_simulator.py`) usam só a biblioteca-padrão.
-Os notebooks precisam de `matplotlib` e `notebook`:
+Os notebooks precisam de `matplotlib` e `notebook`.
+
+Atalho — `./start.sh` cria o `.venv`, instala as libs e abre o Jupyter:
+
+```bash
+./start.sh                 # ou: ./start.sh notebook.ipynb
+```
+
+Manual:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install notebook matplotlib   # só para os notebooks
 ```
+
+Depois de criado, basta `source .venv/bin/activate` em sessões futuras.
 
 ## Como rodar
 
@@ -143,6 +153,7 @@ trab-2/
 ├── .gitignore
 ├── main.py                       # entry fino: parse → run_simulation → print
 ├── cli.py                        # argparse (--algorithm opcional, --input, --quiet)
+├── start.sh                      # cria venv + libs e abre o Jupyter
 ├── test_simulator.py             # regressão por snapshot + coalescing
 ├── notebook.ipynb                # análise comparativa (matplotlib)
 ├── inputs.ipynb                  # exploração dos workloads (matplotlib)
