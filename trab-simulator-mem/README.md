@@ -2,20 +2,16 @@
 
 Aluno: Wellington de Oliveira dos Santos
 
-Simulador textual de alocação dinâmica de memória contígua com partições
-variáveis. Lê um arquivo JSON com a memória total e uma sequência de
-eventos (alocações e liberações), aplica um dos três algoritmos clássicos
-e mostra o estado da memória após cada evento, além de um relatório
-final com utilização e contagem de rejeições.
+Simulador de alocação dinâmica de memória. 
 
-## Algoritmos implementados
+## Algoritmos 
 
-- **First Fit (Primeiro-Apto)** — percorre as brechas em ordem de
+- First Fit — percorre as brechas em ordem de
   endereço e devolve a primeira cujo tamanho comporta o pedido.
-- **Best Fit (Melhor-Apto)** — examina todas as brechas e escolhe a
-  que produz a **menor sobra**. Empate: vence a brecha mais à esquerda.
-- **Worst Fit (Pior-Apto)** — examina todas as brechas e escolhe a
-  **maior** que comporta o pedido. Empate: vence a brecha mais à esquerda.
+- Best Fit — examina todas as brechas e escolhe a
+  que produz a menor sobra. Empate: vence a brecha mais à esquerda.
+- Worst Fit (Pior-Apto) — examina todas as brechas e escolhe a
+  maior que comporta o pedido. Empate: vence a brecha mais à esquerda.
 
 Após cada `LIBERA`, blocos livres adjacentes são fundidos (*coalescing*)
 para manter a memória representada de forma compacta.
@@ -26,18 +22,18 @@ Quando um `ALOC` falha (nenhuma brecha individual comporta o pedido),
 o simulador distingue duas causas, conforme a definição literal do
 enunciado:
 
-- **Fragmentação externa** — `soma(brechas) ≥ pedido`, ou seja, há
+- Fragmentação externa — `soma(brechas) ≥ pedido`, ou seja, há
   espaço total mas não contíguo.
-- **Falta de memória** — nem somando todas as brechas dá no pedido.
+- Falta de memória — nem somando todas as brechas dá no pedido.
 
 Cada falha é contabilizada separadamente no relatório final.
 
 ## Requisitos
 
-- Python 3.10+ — o simulador e a regressão usam **apenas a biblioteca-padrão**.
+- Python 3.10+ — o simulador e a regressão usam apenas a biblioteca-padrão.
 - Os notebooks (`notebook.ipynb`, `inputs.ipynb`) usam `matplotlib` e `notebook` (mesmas libs do trab-1).
 
-> ⚠️ **Observação importante sobre a linguagem.** O enunciado deste
+> ⚠️ Observação importante sobre a linguagem. O enunciado deste
 > trabalho permite apenas C, C++ ou Java. Esta implementação foi feita
 > em Python como decisão consciente do aluno, priorizando legibilidade
 > e velocidade de prototipagem. O comportamento exigido pelo enunciado
@@ -89,7 +85,7 @@ python3 test_simulator.py
 
 ## Formato do arquivo de entrada
 
-Arquivo **JSON**, usuário garante que está bem-formado (mesma convenção
+Arquivo JSON, usuário garante que está bem-formado (mesma convenção
 do trab-1):
 
 ```json
