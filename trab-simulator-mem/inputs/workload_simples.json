@@ -1,12 +1,12 @@
 {
-  "memoria_total": 1000,
-  "eventos": [
-    {"tipo": "ALOC",   "pid": "P1", "tamanho": 200},
-    {"tipo": "ALOC",   "pid": "P2", "tamanho": 300},
-    {"tipo": "ALOC",   "pid": "P3", "tamanho": 100},
-    {"tipo": "LIBERA", "pid": "P2"},
-    {"tipo": "ALOC",   "pid": "P4", "tamanho": 250},
-    {"tipo": "LIBERA", "pid": "P1"},
-    {"tipo": "ALOC",   "pid": "P5", "tamanho": 150}
+  "total_memory": 1000,
+  "events": [
+    {"type": "ALLOC", "pid": "P1", "size": 200},
+    {"type": "ALLOC", "pid": "P2", "size": 300},
+    {"type": "ALLOC", "pid": "P3", "size": 100},
+    {"type": "FREE",  "pid": "P2"},
+    {"type": "ALLOC", "pid": "P4", "size": 250},
+    {"type": "FREE",  "pid": "P1"},
+    {"type": "ALLOC", "pid": "P5", "size": 150}
   ]
 }

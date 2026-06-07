@@ -1,19 +1,20 @@
-"""Snapshot regression: compares `run_simulation` against `snapshots/*.json`.
+"""Snapshot regression: compares ``run_simulation`` against ``snapshots/*.json``.
 
-Regenerate with `generate_snapshots()` when the semantics change on purpose.
+Regenerate with ``generate_snapshots()`` when the semantics change on purpose.
 """
 
+import contextlib
+import io
 import json
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from simulator.memory import Memory
-from simulator.parser import parse_input
-from simulator.report import snapshot_summary
-from simulator.runner import run_simulation
-
+from models.memory.memory import Memory
+from shared.parser import parse_input
+from shared.report import snapshot_summary
+from shared.runner import run_simulation
 
 _ROOT = Path(__file__).resolve().parent
 
@@ -59,8 +60,20 @@ def _test_coalescing() -> None:
         )
 
 
+def _test_verbose_smoke() -> None:
+    # exercises the verbose path (make_event_printer + describe_result +
+    # print_state + ASCII layout); stdout is captured to keep the run quiet.
+    workload = parse_input(_ROOT / "inputs/workload_simples.json")
+    buffer = io.StringIO()
+    with contextlib.redirect_stdout(buffer):
+        run_simulation(workload, "first-fit", verbose=True, show_layout=True)
+    output = buffer.getvalue()
+    if "Evento #" not in output or "Layout:" not in output:
+        raise AssertionError("saída verbose incompleta — printer não executou")
+
+
 def generate_snapshots() -> None:
-    """Dev: `python3 -c "import test_simulator as t; t.generate_snapshots()"`."""
+    """Dev: ``python3 -c "import test_simulator as t; t.generate_snapshots()"``."""
     for _, input_rel, snap_rel in _CASES:
         summaries = _summaries(input_rel)
         (_ROOT / snap_rel).write_text(
@@ -73,7 +86,8 @@ def generate_snapshots() -> None:
 def main() -> int:
     _test_snapshots()
     _test_coalescing()
-    print("OK — snapshots (3 algoritmos × 2 workloads) + coalescing")
+    _test_verbose_smoke()
+    print("OK — snapshots (3 algoritmos × 2 workloads) + coalescing + verbose")
     return 0
 
 

@@ -6,7 +6,7 @@ from pathlib import Path
 def parse_args(argv: list[str] | None, algo_choices: Iterable[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Simulador de alocação dinâmica de memória "
-        "(First Fit, Best Fit, Worst Fit) — UFMS SO 2026."
+        "(First Fit, Best Fit, Worst Fit)."
     )
     parser.add_argument(
         "--algorithm",
@@ -24,5 +24,10 @@ def parse_args(argv: list[str] | None, algo_choices: Iterable[str]) -> argparse.
         "--quiet",
         action="store_true",
         help="Suprime impressão do estado após cada evento; mostra só o relatório final.",
+    )
+    parser.add_argument(
+        "--layout",
+        action="store_true",
+        help="Exibe a barra ASCII do layout da memória após cada evento.",
     )
     return parser.parse_args(argv)

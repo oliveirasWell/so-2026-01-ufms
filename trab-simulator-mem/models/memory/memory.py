@@ -4,30 +4,12 @@ Memory is an ordered list of contiguous blocks. Each block has a start
 address, a size and a pid: if pid is None the block is a gap (free space);
 otherwise it is a partition occupied by that process.
 
-Every allocate/free operation keeps the invariant that the sum of the
-block sizes equals `total_size` and that adjacent free blocks are always
-merged (coalescing).
+Every allocate/free operation keeps the invariant that the sum of the block
+sizes equals ``total_size`` and that adjacent free blocks are always merged
+(coalescing).
 """
 
-from __future__ import annotations
-
-from dataclasses import dataclass
-
-
-@dataclass
-class Block:
-    start: int
-    size: int
-    pid: str | None  # None => gap (free)
-
-    @property
-    def end(self) -> int:
-        # Position right after the block's last byte (interval [start, end)).
-        return self.start + self.size
-
-    @property
-    def is_free(self) -> bool:
-        return self.pid is None
+from models.memory.block import Block
 
 
 class Memory:
@@ -40,10 +22,14 @@ class Memory:
         """List of (global_index, block) for every free block."""
         return [(i, b) for i, b in enumerate(self.blocks) if b.is_free]
 
-    def allocate(self, pid: str, size: int, gap_index: int) -> None:
-        """Allocate `pid` into the gap at `gap_index`.
+    def eligible_gaps(self, size: int) -> list[tuple[int, Block]]:
+        """(global_index, block) for every free block that fits ``size``."""
+        return [(i, b) for i, b in self.gaps() if b.size >= size]
 
-        The gap must have size >= `size`. Any leftover becomes a new gap
+    def allocate(self, pid: str, size: int, gap_index: int) -> None:
+        """Allocate ``pid`` into the gap at ``gap_index``.
+
+        The gap must have size >= ``size``. Any leftover becomes a new gap
         right after the allocated partition.
         """
         gap = self.blocks[gap_index]
@@ -60,7 +46,7 @@ class Memory:
             self.blocks[gap_index:gap_index + 1] = [occupied, new_gap]
 
     def free(self, pid: str) -> bool:
-        """Free the block of process `pid` and merge with free neighbors.
+        """Free the block of process ``pid`` and merge with free neighbors.
 
         Returns True if a block was freed, False if no process had that pid
         (documented in the README — it only warns, never crashes).
@@ -70,10 +56,10 @@ class Memory:
             return False
 
         self.blocks[idx].pid = None
-        self._merge_around(idx)
+        self._merge_neighbors(idx)
         return True
 
-    def _merge_around(self, idx: int) -> None:
+    def _merge_neighbors(self, idx: int) -> None:
         # Merge with the right neighbor first (does not shift idx).
         if idx + 1 < len(self.blocks) and self.blocks[idx + 1].is_free:
             right = self.blocks.pop(idx + 1)

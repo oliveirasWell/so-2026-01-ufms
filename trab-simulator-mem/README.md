@@ -6,14 +6,14 @@ Simulador de alocação dinâmica de memória.
 
 ## Algoritmos 
 
-- First Fit — percorre as brechas em ordem de
+- First Fit — percorre as gaps em ordem de
   endereço e devolve a primeira cujo tamanho comporta o pedido.
-- Best Fit — examina todas as brechas e escolhe a
+- Best Fit — examina todas as gaps e escolhe a
   que produz a menor sobra. Empate: vence a brecha mais à esquerda.
-- Worst Fit (Pior-Apto) — examina todas as brechas e escolhe a
+- Worst Fit (Pior-Apto) — examina todas as gaps e escolhe a
   maior que comporta o pedido. Empate: vence a brecha mais à esquerda.
 
-Após cada `LIBERA`, blocos livres adjacentes são fundidos (*coalescing*)
+Após cada `FREE`, blocos livres adjacentes são fundidos (*coalescing*)
 para manter a memória representada de forma compacta.
 
 ## Detecção de fragmentação externa
@@ -22,16 +22,16 @@ Quando um `ALOC` falha (nenhuma brecha individual comporta o pedido),
 o simulador distingue duas causas, conforme a definição literal do
 enunciado:
 
-- Fragmentação externa — `soma(brechas) ≥ pedido`, ou seja, há
+- Fragmentação externa — `soma(gaps) ≥ pedido`, ou seja, há
   espaço total mas não contíguo.
-- Falta de memória — nem somando todas as brechas dá no pedido.
+- Falta de memória — nem somando todas as gaps dá no pedido.
 
 Cada falha é contabilizada separadamente no relatório final.
 
 ## Requisitos
 
-- Python 3.10+ — o simulador e a regressão usam apenas a biblioteca-padrão.
-- Os notebooks (`notebook.ipynb`, `inputs.ipynb`) usam `matplotlib` e `notebook` (mesmas libs do trab-1).
+- Python 3.11+ — o simulador e a regressão usam apenas a biblioteca-padrão (usamos `enum.StrEnum`, disponível a partir do 3.11).
+- Os notebooks (`notebook.ipynb`, `inputs.ipynb`) usam `matplotlib` e `notebook`.
 
 > ⚠️ Observação importante sobre a linguagem. O enunciado deste
 > trabalho permite apenas C, C++ ou Java. Esta implementação foi feita
@@ -85,27 +85,26 @@ python3 test_simulator.py
 
 ## Formato do arquivo de entrada
 
-Arquivo JSON, usuário garante que está bem-formado (mesma convenção
-do trab-1):
+Arquivo JSON, usuário garante que está bem-formado:
 
 ```json
 {
-  "memoria_total": 1000,
-  "eventos": [
-    {"tipo": "ALOC",   "pid": "P1", "tamanho": 200},
-    {"tipo": "ALOC",   "pid": "P2", "tamanho": 300},
-    {"tipo": "LIBERA", "pid": "P1"}
+  "total_memory": 1000,
+  "events": [
+    {"type": "ALLOC", "pid": "P1", "size": 200},
+    {"type": "ALLOC", "pid": "P2", "size": 300},
+    {"type": "FREE",  "pid": "P1"}
   ]
 }
 ```
 
-- `memoria_total` (int): tamanho total da memória disponível para
+- `total_memory` (int): tamanho total da memória disponível para
   usuários, em bytes (unidade abstrata).
-- `eventos` (lista): cada item tem `tipo` (`"ALOC"` ou `"LIBERA"`) e
-  `pid` (string). `tamanho` (int) é obrigatório em `ALOC` e ignorado
-  em `LIBERA`.
+- `events` (lista): cada item tem `type` (`"ALLOC"` ou `"FREE"`) e
+  `pid` (string). `size` (int) é obrigatório em `ALLOC` e ignorado
+  em `FREE`.
 
-`LIBERA` de um `pid` que não está alocado é tratado como aviso (não
+Um `FREE` de um `pid` que não está alocado é tratado como aviso (não
 trava a simulação) e contabilizado como `freed_missing` no
 relatório.
 
@@ -114,7 +113,7 @@ relatório.
 | arquivo | descrição |
 |---------|-----------|
 | `workload.json` | cenário didático geral (1200 bytes, 15 eventos) — diferencia visivelmente os 3 algoritmos |
-| `workload_fragmentacao.json` | reproduz fragmentação externa canônica + falta de memória + LIBERA de pid inexistente |
+| `workload_fragmentacao.json` | reproduz fragmentação externa canônica + falta de memória + FREE de pid inexistente |
 | `workload_simples.json` | exemplo mínimo, sem falhas, útil para sanity check |
 
 ## Regressão (snapshots)
@@ -143,12 +142,15 @@ jupyter notebook notebook.ipynb   # ou inputs.ipynb
 
 ## Estrutura
 
+Os modelos (dataclasses/enums) ficam em `models/` — um arquivo por modelo,
+sem lógica — e a lógica fica em `shared/` e `algorithms/`.
+
 ```
 trab-2/
 ├── README.md
 ├── .gitignore
 ├── main.py                       # entry fino: parse → run_simulation → print
-├── cli.py                        # argparse (--algorithm opcional, --input, --quiet)
+├── parse_args.py                 # argparse (--algorithm opcional, --input, --quiet)
 ├── start.sh                      # cria venv + libs e abre o Jupyter
 ├── test_simulator.py             # regressão por snapshot + coalescing
 ├── notebook.ipynb                # análise comparativa (matplotlib)
@@ -160,35 +162,49 @@ trab-2/
 ├── snapshots/                    # resultados fixados p/ a regressão
 │   ├── workload_simples_stats.json
 │   └── workload_fragmentacao_stats.json
-└── simulator/
-    ├── parser.py                 # leitura do JSON
-    ├── memory.py                 # Block + Memory (com coalescing)
-    ├── runner.py                 # run (1 evento) + run_simulation (1..N algoritmos)
+├── models/                       # só definições de modelo (um arquivo por modelo)
+│   ├── types.py                  # ChooseFunction (alias de tipo)
+│   ├── memory/
+│   │   ├── block.py              # Block
+│   │   └── memory.py             # Memory (gaps, eligible_gaps, allocate, free + coalescing)
+│   ├── workload/
+│   │   ├── event_type.py         # EventType (StrEnum: ALLOC/FREE)
+│   │   ├── event.py              # Event
+│   │   └── workload.py           # Workload
+│   └── simulation/
+│       ├── result_kind.py        # ResultKind (StrEnum)
+│       ├── event_result.py       # EventResult
+│       ├── statistics.py         # Statistics
+│       └── simulation_result.py  # SimulationResult
+├── algorithms/
+│   ├── instantiate_algorithms.py # registry: chave → choose
+│   ├── first_fit.py
+│   ├── best_fit.py
+│   └── worst_fit.py
+└── shared/
+    ├── parser.py                 # leitura do JSON (object_hook → models)
+    ├── simulator.py              # process (1 evento) + run (1 algoritmo)
+    ├── runner.py                 # run_simulation (1..N algoritmos)
     ├── evaluation.py             # pick_winners (vencedor por métrica)
     ├── visualization.py          # estado por evento + describe_result
-    ├── report.py                 # relatório final + tabela comparativa + snapshot_summary
-    └── algorithms/
-        ├── instantiate_algorithms.py   # registry: nome → choose
-        ├── first_fit.py
-        ├── best_fit.py
-        └── worst_fit.py
+    └── report.py                 # relatório final + tabela comparativa + snapshot_summary
 ```
 
 ## Saída exemplo
 
 ```
-Evento #7: ALOC  P5=220  → FALHA: FRAGMENTAÇÃO EXTERNA (soma das brechas comporta, mas nenhuma individualmente)
+Evento #7: ALOC  P5=220  → FALHA: FRAGMENTAÇÃO EXTERNA (soma das gaps comporta, mas nenhuma individualmente)
   Partições ocupadas:
     [  200–  299] P2     tam=100
     [  400–  449] P4     tam=50
-  Brechas:
+  Gaps:
     [    0–  199] LIVRE  tam=200
     [  300–  399] LIVRE  tam=100
     [  450–  599] LIVRE  tam=150
   Layout: |....................|2222222222|..........|44444|...............|
 ```
 
-A barra de layout é proporcional ao tamanho total da memória. Brechas
+A barra de layout é proporcional ao tamanho total da memória. Gaps
 aparecem como `.`; partições ocupadas usam o último caractere do `pid`
 (P1 → `1`, P2 → `2`, etc.).
 

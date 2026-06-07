@@ -1,18 +1,15 @@
 """Final simulation report.
 
 The assignment requires reporting "memory utilization" and the "number of
-processes that could not be allocated for lack of contiguous space". We
-report those two plus a few extra statistics useful to check the
-algorithms' behavior: final utilization, per-category failure counts,
-largest residual gap and number of merges performed.
+processes that could not be allocated for lack of contiguous space". We report
+those two plus a few extra statistics useful to check the algorithms' behavior:
+final utilization, per-category failure counts, largest residual gap and number
+of merges performed.
 """
 
-from __future__ import annotations
-
-from simulator.evaluation import pick_winners
-from simulator.memory import Memory
-from simulator.runner import Statistics
-
+from models.memory.memory import Memory
+from models.simulation.statistics import Statistics
+from shared.evaluation import pick_winners
 
 _COMPARISON_COLUMNS = (
     "allocated",
@@ -43,8 +40,8 @@ def print_report(memory: Memory, stats: Statistics) -> None:
     print(f"  Utilização final ............ {final_usage / total * 100:6.2f}% "
           f"({final_usage} / {total})")
     print(f"  Maior brecha final .......... {memory.largest_gap()}")
-    print(f"  Soma das brechas finais ..... {memory.free_space()}")
-    print(f"  Fusões realizadas (LIBERA) .. {stats.merges}")
+    print(f"  Soma das gaps finais ..... {memory.free_space()}")
+    print(f"  Fusões realizadas (FREE) .. {stats.merges}")
     print()
     print(f"  Processos alocados .......... {stats.allocated}")
     print(f"  Processos liberados ......... {stats.freed}")

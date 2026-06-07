@@ -3,8 +3,6 @@
 Tie: the first algorithm in insertion order wins.
 """
 
-from __future__ import annotations
-
 LOWER_IS_BETTER = (
     "external_fragmentation_failures",
     "no_space_failures",
@@ -20,7 +18,7 @@ def _value(summary: dict, metric: str) -> float:
 
 
 def pick_winners(reports: dict[str, dict]) -> dict[str, str]:
-    """`total_rejected` is derived from the sum of the two failure counts."""
+    """``total_rejected`` is derived from the sum of the two failure counts."""
     if not reports:
         return {}
     items = list(reports.items())

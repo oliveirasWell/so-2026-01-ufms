@@ -1,15 +1,15 @@
 {
-  "memoria_total": 600,
-  "eventos": [
-    {"tipo": "ALOC",   "pid": "P1", "tamanho": 200},
-    {"tipo": "ALOC",   "pid": "P2", "tamanho": 100},
-    {"tipo": "ALOC",   "pid": "P3", "tamanho": 100},
-    {"tipo": "ALOC",   "pid": "P4", "tamanho": 50},
-    {"tipo": "LIBERA", "pid": "P1"},
-    {"tipo": "LIBERA", "pid": "P3"},
-    {"tipo": "ALOC",   "pid": "P5", "tamanho": 220},
-    {"tipo": "ALOC",   "pid": "P6", "tamanho": 1000},
-    {"tipo": "ALOC",   "pid": "P7", "tamanho": 80},
-    {"tipo": "LIBERA", "pid": "X-NAO-EXISTE"}
+  "total_memory": 600,
+  "events": [
+    {"type": "ALLOC", "pid": "P1", "size": 200},
+    {"type": "ALLOC", "pid": "P2", "size": 100},
+    {"type": "ALLOC", "pid": "P3", "size": 100},
+    {"type": "ALLOC", "pid": "P4", "size": 50},
+    {"type": "FREE",  "pid": "P1"},
+    {"type": "FREE",  "pid": "P3"},
+    {"type": "ALLOC", "pid": "P5", "size": 220},
+    {"type": "ALLOC", "pid": "P6", "size": 1000},
+    {"type": "ALLOC", "pid": "P7", "size": 80},
+    {"type": "FREE",  "pid": "X-NAO-EXISTE"}
   ]
 }
