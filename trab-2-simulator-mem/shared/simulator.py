@@ -10,6 +10,7 @@ Classification of an allocation the algorithm refused (choose -> None):
 - sum of gaps <  requested size  => NO SPACE
 """
 
+import copy
 from collections.abc import Callable
 
 from models.memory.memory import Memory
@@ -77,3 +78,10 @@ def run(
 
     stats.merges = memory.merges
     return memory, stats
+
+
+def timeline(workload: Workload, choose: ChooseFunction) -> list[list]:
+    """Snapshot of ``memory.blocks`` after each event — drives the memory map."""
+    snapshots: list[list] = []
+    run(workload, choose, on_event=lambda _n, _r, memory: snapshots.append(copy.deepcopy(memory.blocks)))
+    return snapshots

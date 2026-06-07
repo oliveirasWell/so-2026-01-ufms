@@ -20,6 +20,15 @@ _COMPARISON_COLUMNS = (
     "final_largest_gap",
 )
 
+_COLUMN_LABELS = {
+    "allocated": "Alocados",
+    "external_fragmentation_failures": "Rej. frag.",
+    "no_space_failures": "Rej. s/ mem",
+    "merges": "Fusões",
+    "final_utilization_pct": "Util. final %",
+    "final_largest_gap": "Maior brecha",
+}
+
 
 def print_report(memory: Memory, stats: Statistics) -> None:
     total = memory.total_size
@@ -80,3 +89,19 @@ def print_comparison(reports: list[tuple[str, dict]]) -> None:
     print("Vencedor por métrica (menos falhas/rejeições e mais utilização é melhor)")
     for metric, name in pick_winners(dict(reports)).items():
         print(f"  {metric}: {name}")
+
+
+def to_markdown(reports: list[tuple[str, dict]]) -> str:
+    """Comparison as a rendered Markdown table + winners — for the notebook."""
+    labels = [_COLUMN_LABELS[c] for c in _COMPARISON_COLUMNS]
+    lines = [
+        "| Algoritmo | " + " | ".join(labels) + " |",
+        "| :-- |" + " --: |" * len(_COMPARISON_COLUMNS),
+    ]
+    for name, summary in reports:
+        cells = [str(summary[c]) for c in _COMPARISON_COLUMNS]
+        lines.append(f"| {name} | " + " | ".join(cells) + " |")
+
+    lines += ["", "**Vencedor por métrica**", "", "| Métrica | Vencedor |", "| :-- | :-- |"]
+    lines += [f"| `{metric}` | {name} |" for metric, name in pick_winners(dict(reports)).items()]
+    return "\n".join(lines)

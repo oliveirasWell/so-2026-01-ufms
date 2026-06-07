@@ -112,9 +112,10 @@ relatório.
 
 | arquivo | descrição |
 |---------|-----------|
-| `workload.json` | cenário didático geral (1200 bytes, 15 eventos) — diferencia visivelmente os 3 algoritmos |
-| `workload_fragmentacao.json` | reproduz fragmentação externa canônica + falta de memória + FREE de pid inexistente |
-| `workload_simples.json` | exemplo mínimo, sem falhas, útil para sanity check |
+| `workload_simples.json` | 7 eventos sobre 1000 — exemplo mínimo, sem falhas, sanity check |
+| `workload_complexo.json` | 45 eventos sobre 2000 — carga realista; diferencia fortemente os 3 algoritmos |
+| `workload_fragmentacao.json` | 28 eventos sobre 1000 — fragmentação externa + falta de memória + FREE de pid inexistente |
+| `workload.json` | cenário geral usado como default da CLI (1000, 20 eventos) |
 
 ## Regressão (snapshots)
 
@@ -134,9 +135,10 @@ Análise visual com `matplotlib` (rodar após o Setup acima):
 jupyter notebook notebook.ipynb   # ou inputs.ipynb
 ```
 
-- `notebook.ipynb` — compara First/Best/Worst Fit em cada workload: layout final
-  da memória, gráficos de métricas (utilização, maior brecha, rejeições) e a
-  maior brecha por evento no workload de fragmentação.
+- `notebook.ipynb` — relatório comparativo em três experimentos (validação →
+  realista → fragmentação). Para cada workload: tabela comparativa, **mapa de
+  memória ao longo do tempo** por algoritmo, gráficos de métricas e uma leitura
+  dos resultados (com a maior brecha por evento no workload de fragmentação).
 - `inputs.ipynb` — explora os workloads de entrada: capacidade, mix de eventos,
   demanda total de `ALOC` e distribuição dos tamanhos.
 
@@ -183,25 +185,27 @@ trab-2/
 │   └── worst_fit.py
 └── shared/
     ├── parser.py                 # leitura do JSON (object_hook → models)
-    ├── simulator.py              # process (1 evento) + run (1 algoritmo)
+    ├── simulator.py              # process (1 evento) + run (1 algoritmo) + timeline (snapshots por evento)
     ├── runner.py                 # run_simulation (1..N algoritmos)
     ├── evaluation.py             # pick_winners (vencedor por métrica)
     ├── visualization.py          # estado por evento + describe_result
-    └── report.py                 # relatório final + tabela comparativa + snapshot_summary
+    ├── plots.py                  # mapa de memória no tempo + barras + curva da maior brecha
+    └── report.py                 # relatório final + tabela comparativa/markdown + snapshot_summary
 ```
 
 ## Saída exemplo
 
 ```
-Evento #7: ALOC  P5=220  → FALHA: FRAGMENTAÇÃO EXTERNA (soma das gaps comporta, mas nenhuma individualmente)
+Evento #10: ALOC  P7=300  → FALHA: FRAGMENTAÇÃO EXTERNA (soma das gaps comporta, mas nenhuma individualmente)
   Partições ocupadas:
-    [  200–  299] P2     tam=100
-    [  400–  449] P4     tam=50
+    [    0–  149] P1     tam=150
+    [  300–  449] P3     tam=150
+    [  600–  749] P5     tam=150
   Gaps:
-    [    0–  199] LIVRE  tam=200
-    [  300–  399] LIVRE  tam=100
+    [  150–  299] LIVRE  tam=150
     [  450–  599] LIVRE  tam=150
-  Layout: |....................|2222222222|..........|44444|...............|
+    [  750–  999] LIVRE  tam=250
+  Layout: |111111111|.........|333333333|.........|555555555|...............|
 ```
 
 A barra de layout é proporcional ao tamanho total da memória. Gaps
