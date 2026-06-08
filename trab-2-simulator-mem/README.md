@@ -2,16 +2,16 @@
 
 Aluno: Wellington de Oliveira dos Santos
 
-Simulador de alocação dinâmica de memória. 
+Implementação e análise comparativa dos algoritmos de alocação de memória First Fit, Best Fit e Worst Fit.
 
 ## Algoritmos 
 
-- First Fit — percorre as gaps em ordem de
+- First Fit: percorre as brechas livres em ordem de
   endereço e devolve a primeira cujo tamanho comporta o pedido.
-- Best Fit — examina todas as gaps e escolhe a
-  que produz a menor sobra. Empate: vence a brecha mais à esquerda.
-- Worst Fit (Pior-Apto) — examina todas as gaps e escolhe a
-  maior que comporta o pedido. Empate: vence a brecha mais à esquerda.
+- Best Fit: examina todas as brechas e escolhe a
+  que produz a menor sobra. Em caso de empate, vence a brecha mais à esquerda.
+- Worst Fit: examina todas as brechas e escolhe a
+  maior que comporta o pedido. Em caso de empate, vence a brecha mais à esquerda.
 
 Após cada `FREE`, blocos livres adjacentes são fundidos (*coalescing*)
 para manter a memória representada de forma compacta.
@@ -22,14 +22,14 @@ Quando um `ALOC` falha (nenhuma brecha individual comporta o pedido),
 o simulador distingue duas causas, conforme a definição literal do
 enunciado:
 
-- Fragmentação externa — `soma(gaps) ≥ pedido`, ou seja, há
+- Fragmentação externa — `soma(brechas) ≥ pedido`, ou seja, há
   espaço total mas não contíguo.
-- Falta de memória — nem somando todas as gaps dá no pedido.
+- Falta de memória — nem a soma de todas as brechas atinge o pedido.
 
 Cada falha é contabilizada separadamente no relatório final.
 
 Na fragmentação externa o espaço total existe, mas espalhado em várias
-gaps. Aqui a rejeição é final: o processo não é alocado — recuperar esse
+brechas. A rejeição é definitiva: o processo não é alocado — recuperar esse
 espaço exigiria técnicas fora do escopo (ver *Trabalhos futuros*).
 
 ## Requisitos
@@ -50,7 +50,7 @@ espaço exigiria técnicas fora do escopo (ver *Trabalhos futuros*).
 O simulador e a regressão (`test_simulator.py`) usam só a biblioteca-padrão.
 Os notebooks precisam de `matplotlib` e `notebook`.
 
-Atalho — `./start.sh` cria o `.venv`, instala as libs e abre o Jupyter:
+Atalho — `./start.sh` cria o `.venv`, instala as bibliotecas e abre o Jupyter:
 
 ```bash
 ./start.sh                 # ou: ./start.sh notebook.ipynb
@@ -89,7 +89,7 @@ python3 test_simulator.py
 
 ## Formato do arquivo de entrada
 
-Arquivo JSON, usuário garante que está bem-formado:
+Arquivo JSON (assume-se bem-formado):
 
 ```json
 {
@@ -116,10 +116,10 @@ relatório.
 
 | arquivo | descrição |
 |---------|-----------|
-| `workload_simples.json` | 7 eventos sobre 1000 — exemplo mínimo, sem falhas, sanity check |
+| `workload_simples.json` | 7 eventos sobre 1000 — exemplo mínimo, sem falhas, para verificação básica |
 | `workload_complexo.json` | 45 eventos sobre 2000 — carga realista; diferencia fortemente os 3 algoritmos |
 | `workload_fragmentacao.json` | 28 eventos sobre 1000 — fragmentação externa + falta de memória + FREE de pid inexistente |
-| `workload.json` | cenário geral usado como default da CLI (1000, 20 eventos) |
+| `workload.json` | cenário geral usado como padrão da CLI (1000, 20 eventos) |
 
 ## Regressão (snapshots)
 
@@ -155,7 +155,7 @@ sem lógica — e a lógica fica em `shared/` e `algorithms/`.
 trab-2/
 ├── README.md
 ├── .gitignore
-├── main.py                       # entry fino: parse → run_simulation → print
+├── main.py                       # ponto de entrada: parse → run_simulation → print
 ├── parse_args.py                 # argparse (--algorithm opcional, --input, --quiet)
 ├── start.sh                      # cria venv + libs e abre o Jupyter
 ├── test_simulator.py             # regressão por snapshot + coalescing
@@ -219,13 +219,10 @@ aparecem como `.`; partições ocupadas usam o último caractere do `pid`
 
 ## Trabalhos futuros
 
-A rejeição por fragmentação externa é final neste simulador. Duas
-extensões naturais a tornariam recuperável:
+De forma natural, duas extensões são visadas a este trabalho:
 
-- Compactação/realocação — mover as partições já alocadas para juntar as
-  brechas livres num único bloco contíguo e então atender o pedido.
-- Alocação não-contígua (paginação) — abandonar a exigência de
-  contiguidade física, eliminando a fragmentação externa por construção.
+- Compactação/realocação — mover as partições já alocadas para juntar as brechas livres num único bloco contíguo e então atender o pedido.
+- Alocação não-contígua por paginação, eliminando a fragmentação externa por construção.
 
 ## Referências e notas
 
