@@ -6,12 +6,25 @@ as a colored band so external fragmentation is visible as the memory breaks into
 scattered holes over time.
 """
 
+import copy
+
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 
 from models.types import ChooseFunction
 from models.workload.workload import Workload
-from shared.simulator import timeline
+from shared.simulator import Simulator
+
+
+def timeline(workload: Workload, choose: ChooseFunction) -> list[list]:
+    """Snapshot of ``memory.blocks`` after each event — drives the memory map."""
+    snapshots: list[list] = []
+    Simulator(
+        workload,
+        choose,
+        on_event=lambda _n, _r, memory: snapshots.append(copy.deepcopy(memory.blocks)),
+    ).run()
+    return snapshots
 
 
 def pid_color_map(snapshots: list[list]) -> dict[str, tuple]:

@@ -6,11 +6,10 @@ proportional layout of the whole memory in a single line, handy to spot
 fragmentation at a glance (enabled by the ``--layout`` CLI flag).
 """
 
-from collections.abc import Callable
-
 from models.memory.memory import Memory
 from models.simulation.event_result import EventResult
 from models.simulation.result_kind import ResultKind
+from models.types import OnEvent
 
 
 def describe_result(result: EventResult) -> str:
@@ -31,9 +30,7 @@ def describe_result(result: EventResult) -> str:
     return f"{event}"
 
 
-def make_event_printer(
-    *, show_layout: bool = False
-) -> Callable[[int, EventResult, Memory], None]:
+def make_event_printer(*, show_layout: bool = False) -> OnEvent:
     """Build an ``on_event`` callback that prints each event and the resulting
     memory state. The event number is supplied by the engine, keeping all
     stdout in the presentation layer while the simulation engine stays pure.

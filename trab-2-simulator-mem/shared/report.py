@@ -8,6 +8,7 @@ of merges performed.
 """
 
 from models.memory.memory import Memory
+from models.simulation.simulation_result import SimulationResult
 from models.simulation.statistics import Statistics
 from shared.evaluation import pick_winners
 
@@ -28,6 +29,18 @@ _COLUMN_LABELS = {
     "final_utilization_pct": "Util. final %",
     "final_largest_gap": "Maior brecha",
 }
+
+
+def print_reports(results: list[SimulationResult]) -> None:
+    for result in results:
+        print(f"=== {result.algorithm} ===")
+        print_report(result.memory, result.stats)
+        print()
+
+    if len(results) > 1:
+        print_comparison(
+            [(r.algorithm, snapshot_summary(r.memory, r.stats)) for r in results]
+        )
 
 
 def print_report(memory: Memory, stats: Statistics) -> None:

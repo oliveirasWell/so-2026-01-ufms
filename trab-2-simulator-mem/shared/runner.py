@@ -3,7 +3,7 @@
 from algorithms.instantiate_algorithms import instantiate_algorithms
 from models.simulation.simulation_result import SimulationResult
 from models.workload.workload import Workload
-from shared.simulator import run
+from shared.simulator import Simulator
 from shared.visualization import make_event_printer
 
 
@@ -23,6 +23,6 @@ def run_simulation(
     on_event = make_event_printer(show_layout=show_layout) if verbose else None
     results: list[SimulationResult] = []
     for name, choose in instantiate_algorithms(algo_key):
-        memory, stats = run(workload, choose, on_event=on_event)
+        memory, stats = Simulator(workload, choose, on_event=on_event).run()
         results.append(SimulationResult(algorithm=name, memory=memory, stats=stats))
     return results

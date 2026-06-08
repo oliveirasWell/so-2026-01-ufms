@@ -28,6 +28,10 @@ enunciado:
 
 Cada falha é contabilizada separadamente no relatório final.
 
+Na fragmentação externa o espaço total existe, mas espalhado em várias
+gaps. Aqui a rejeição é final: o processo não é alocado — recuperar esse
+espaço exigiria técnicas fora do escopo (ver *Trabalhos futuros*).
+
 ## Requisitos
 
 - Python 3.11+ — o simulador e a regressão usam apenas a biblioteca-padrão (usamos `enum.StrEnum`, disponível a partir do 3.11).
@@ -165,7 +169,7 @@ trab-2/
 │   ├── workload_simples_stats.json
 │   └── workload_fragmentacao_stats.json
 ├── models/                       # só definições de modelo (um arquivo por modelo)
-│   ├── types.py                  # ChooseFunction (alias de tipo)
+│   ├── types.py                  # ChooseFunction + OnEvent (aliases de tipo)
 │   ├── memory/
 │   │   ├── block.py              # Block
 │   │   └── memory.py             # Memory (gaps, eligible_gaps, allocate, free + coalescing)
@@ -185,12 +189,13 @@ trab-2/
 │   └── worst_fit.py
 └── shared/
     ├── parser.py                 # leitura do JSON (object_hook → models)
-    ├── simulator.py              # process (1 evento) + run (1 algoritmo) + timeline (snapshots por evento)
+    ├── constants.py              # RESULT_KIND_COUNTERS (ResultKind → campo de Statistics)
+    ├── simulator.py              # class Simulator (roda 1 algoritmo, evento a evento)
     ├── runner.py                 # run_simulation (1..N algoritmos)
     ├── evaluation.py             # pick_winners (vencedor por métrica)
     ├── visualization.py          # estado por evento + describe_result
-    ├── plots.py                  # mapa de memória no tempo + barras + curva da maior brecha
-    └── report.py                 # relatório final + tabela comparativa/markdown + snapshot_summary
+    ├── plots.py                  # timeline (snapshots) + mapa de memória + barras + curva da maior brecha
+    └── report.py                 # print_reports + relatório final + tabela comparativa/markdown + snapshot_summary
 ```
 
 ## Saída exemplo
@@ -211,6 +216,16 @@ Evento #10: ALOC  P7=300  → FALHA: FRAGMENTAÇÃO EXTERNA (soma das gaps compo
 A barra de layout é proporcional ao tamanho total da memória. Gaps
 aparecem como `.`; partições ocupadas usam o último caractere do `pid`
 (P1 → `1`, P2 → `2`, etc.).
+
+## Trabalhos futuros
+
+A rejeição por fragmentação externa é final neste simulador. Duas
+extensões naturais a tornariam recuperável:
+
+- Compactação/realocação — mover as partições já alocadas para juntar as
+  brechas livres num único bloco contíguo e então atender o pedido.
+- Alocação não-contígua (paginação) — abandonar a exigência de
+  contiguidade física, eliminando a fragmentação externa por construção.
 
 ## Referências e notas
 
