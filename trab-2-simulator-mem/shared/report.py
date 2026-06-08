@@ -30,6 +30,15 @@ _COLUMN_LABELS = {
     "final_largest_gap": "Maior brecha",
 }
 
+# Descriptive, goal-oriented labels for the "winner per metric" table: each
+# entry states the objective the winning algorithm best satisfies.
+_WINNER_LABELS = {
+    "external_fragmentation_failures": "Menos rejeições por fragmentação externa",
+    "no_space_failures": "Menos rejeições por falta de memória",
+    "total_rejected": "Menos processos rejeitados no total",
+    "final_utilization_pct": "Maior utilização final da memória",
+}
+
 
 def print_reports(results: list[SimulationResult]) -> None:
     for result in results:
@@ -101,7 +110,7 @@ def print_comparison(reports: list[tuple[str, dict]]) -> None:
     print()
     print("Vencedor por métrica (menos falhas/rejeições e mais utilização é melhor)")
     for metric, name in pick_winners(dict(reports)).items():
-        print(f"  {metric}: {name}")
+        print(f"  {_WINNER_LABELS.get(metric, metric)}: {name}")
 
 
 def to_markdown(reports: list[tuple[str, dict]]) -> str:
@@ -115,6 +124,9 @@ def to_markdown(reports: list[tuple[str, dict]]) -> str:
         cells = [str(summary[c]) for c in _COMPARISON_COLUMNS]
         lines.append(f"| {name} | " + " | ".join(cells) + " |")
 
-    lines += ["", "**Vencedor por métrica**", "", "| Métrica | Vencedor |", "| :-- | :-- |"]
-    lines += [f"| `{metric}` | {name} |" for metric, name in pick_winners(dict(reports)).items()]
+    lines += ["", "**Vencedor por métrica**", "", "| Critério | Vencedor |", "| :-- | :-- |"]
+    lines += [
+        f"| {_WINNER_LABELS.get(metric, metric)} | {name} |"
+        for metric, name in pick_winners(dict(reports)).items()
+    ]
     return "\n".join(lines)
