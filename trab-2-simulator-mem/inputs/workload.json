@@ -1,0 +1,20 @@
+{
+  "total_memory": 1200,
+  "events": [
+    {"type": "ALLOC", "pid": "P1",  "size": 250},
+    {"type": "ALLOC", "pid": "P2",  "size": 150},
+    {"type": "ALLOC", "pid": "P3",  "size": 400},
+    {"type": "ALLOC", "pid": "P4",  "size": 100},
+    {"type": "ALLOC", "pid": "P5",  "size": 200},
+    {"type": "FREE",  "pid": "P2"},
+    {"type": "FREE",  "pid": "P4"},
+    {"type": "ALLOC", "pid": "P6",  "size": 80},
+    {"type": "ALLOC", "pid": "P7",  "size": 120},
+    {"type": "FREE",  "pid": "P3"},
+    {"type": "ALLOC", "pid": "P8",  "size": 350},
+    {"type": "ALLOC", "pid": "P9",  "size": 90},
+    {"type": "FREE",  "pid": "P1"},
+    {"type": "FREE",  "pid": "P5"},
+    {"type": "ALLOC", "pid": "P10", "size": 500}
+  ]
+}

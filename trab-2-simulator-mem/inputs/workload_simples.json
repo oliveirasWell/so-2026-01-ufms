@@ -1,0 +1,12 @@
+{
+  "total_memory": 1000,
+  "events": [
+    {"type": "ALLOC", "pid": "P1", "size": 200},
+    {"type": "ALLOC", "pid": "P2", "size": 300},
+    {"type": "ALLOC", "pid": "P3", "size": 100},
+    {"type": "FREE",  "pid": "P2"},
+    {"type": "ALLOC", "pid": "P4", "size": 250},
+    {"type": "FREE",  "pid": "P1"},
+    {"type": "ALLOC", "pid": "P5", "size": 150}
+  ]
+}

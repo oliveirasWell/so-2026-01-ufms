@@ -1,0 +1,35 @@
+{
+  "first-fit": {
+    "allocated": 12,
+    "freed": 9,
+    "freed_missing": 2,
+    "external_fragmentation_failures": 2,
+    "no_space_failures": 3,
+    "merges": 5,
+    "final_utilization_pct": 52.0,
+    "final_largest_gap": 260,
+    "final_free_space": 480
+  },
+  "best-fit": {
+    "allocated": 12,
+    "freed": 9,
+    "freed_missing": 2,
+    "external_fragmentation_failures": 2,
+    "no_space_failures": 3,
+    "merges": 5,
+    "final_utilization_pct": 52.0,
+    "final_largest_gap": 260,
+    "final_free_space": 480
+  },
+  "worst-fit": {
+    "allocated": 12,
+    "freed": 9,
+    "freed_missing": 2,
+    "external_fragmentation_failures": 3,
+    "no_space_failures": 2,
+    "merges": 6,
+    "final_utilization_pct": 67.0,
+    "final_largest_gap": 250,
+    "final_free_space": 330
+  }
+}
